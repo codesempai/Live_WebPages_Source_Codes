@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - 3D CSS &amp;&amp; Scroll-Driven Laptop Flip</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
+
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+}
+
+:root {
+  --nav-height: 60px;
+  --black: hsl(0 0% 2%);
+  --white: hsl(0 0% 98%);
+  --content-width: 120ch;
+  --accent: hsl(10 90% 50%);
+  --jump: cover 15% cover 45%;
+  --spin: cover 15% cover 45%;
+  --flip: cover 15% cover 45%;
+  --open: cover 15% cover 45%;
+  --straighten: contain 25% contain 65%;
+  --zoom: contain 25% exit -20%;
+}
+
+body {
+  min-height: 100vh;
+  font-family: sans-serif, system-ui;
+  background: var(--white);
+}
+
+body::before {
+  --line: color-mix(in lch, canvasText 45%, transparent);
+  --size: 60px;
+  content: '';
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  background: linear-gradient(
+        90deg,
+        var(--line) 1px,
+        transparent 1px var(--size)
+      )
+      50% 50% / var(--size) var(--size),
+    linear-gradient(var(--line) 1px, transparent 1px var(--size)) 50% 50% /
+      var(--size) var(--size);
+  -webkit-mask: linear-gradient(-15deg, transparent 40%, white);
+          mask: linear-gradient(-15deg, transparent 40%, white);
+  top: 0;
+  transform-style: flat;
+  pointer-events: none;
+  z-index: -1;
+}
+
+footer {
+	padding: 2rem;
+  background: var(--black);
+  color: var(--white);
+  text-align: center;
+}
+
+h1 {
+	font-size: clamp(2rem, 5vw + 1rem, 8rem);
+	font-family: "EB Garamond", serif;
+	line-height: 0.9;
+	font-weight: 500;
+	translate: 0 -100%;
+	margin: 0;
+}
+
+h1 span {
+	font-variant: small-caps;
+	font-size: 0.5em;
+}
+
+/* Header section */
+header {
+  height: 100vh;
+  position: absolute;
+  padding: 2rem;
+  width: 800px;
+  max-width: calc(100% - 4rem);
+  left: 50%;
+  top: 0;
+  translate: -50% 0;
+  display: grid;
+  align-content: center;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Laptop section */
+.laptop *,
+.laptop *:before,
+.laptop *:after {
+  transform-style: preserve-3d;
+  box-sizing: border-box;
+}
+
+.laptop {
+  height: 500vh;
+  view-timeline: --laptop;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.shell--top .cuboid__side:nth-of-type(5):after {
+  content: "JFDI";
+  padding: 0.5vmin;
+  font-size: 3vmin;
+  position: absolute;
+  color: white;
+  font-weight: bold;
+  background: var(--black);
+  top: 60%;
+  left: 65%;
+  rotate: 140deg;
+}
+
+.laptop section {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.laptop .scene {
+  transform: rotateX(-24deg) rotateY(-32deg) rotateX(90deg) translate3d(0, 0, -20vmin);
+}
+
+main {
+	view-timeline: --main;
+}
+
+.scene__jump {
+  -webkit-animation: book-jump both ease-in-out;
+          animation: book-jump both ease-in-out;
+  animation-timeline: --laptop;
+  animation-range: var(--jump);
+}
+
+@-webkit-keyframes jump {
+  50% {
+    transform: translate3d(0, 0, 30vmin);
+  }
+}
+
+@keyframes jump {
+  50% {
+    transform: translate3d(0, 0, 30vmin);
+  }
+}
+
+.scene__spin {
+  -webkit-animation: book-spin both ease-in-out;
+          animation: book-spin both ease-in-out;
+  animation-timeline: --laptop;
+  animation-range: var(--spin);
+}
+
+.scene__flip {
+  -webkit-animation: book-flip both ease-in-out;
+          animation: book-flip both ease-in-out;
+  animation-timeline: --laptop;
+  animation-range: var(--flip); 
+}
+
+@-webkit-keyframes book-flip {
+  0%, 20% {
+    transform: rotateX(0deg);
+  }
+  80%, 100% {
+    transform: rotateX(360deg);
+  }
+}
+
+@keyframes book-flip {
+  0%, 20% {
+    transform: rotateX(0deg);
+  }
+  80%, 100% {
+    transform: rotateX(360deg);
+  }
+}
+
+@-webkit-keyframes book-jump {
+  50% {
+    transform: translate3d(0, 0, 40vmin);
+  }
+}
+
+@keyframes book-jump {
+  50% {
+    transform: translate3d(0, 0, 40vmin);
+  }
+}
+
+@-webkit-keyframes rock {
+  0% {
+    transform-origin: 0 50%;
+  }
+  20% {
+    transform: rotateY(0deg);
+  }
+  25% {
+    transform: rotateY(-20deg);
+  }
+  30% {
+    transform: rotateY(0deg);
+    transform-origin: 0 50%;
+  }
+  50% {
+    transform-origin: 100% 50%;
+  }
+  70% {
+    transform: rotateY(0deg);
+  }
+  75% {
+    transform: rotateY(20deg);
+  }
+  80% {
+    transform: rotateY(0deg);
+    transform-origin: 100% 50%;
+  }
+  100% {
+    transform-origin: 0 50%;
+  }
+}
+
+@keyframes rock {
+  0% {
+    transform-origin: 0 50%;
+  }
+  20% {
+    transform: rotateY(0deg);
+  }
+  25% {
+    transform: rotateY(-20deg);
+  }
+  30% {
+    transform: rotateY(0deg);
+    transform-origin: 0 50%;
+  }
+  50% {
+    transform-origin: 100% 50%;
+  }
+  70% {
+    transform: rotateY(0deg);
+  }
+  75% {
+    transform: rotateY(20deg);
+  }
+  80% {
+    transform: rotateY(0deg);
+    transform-origin: 100% 50%;
+  }
+  100% {
+    transform-origin: 0 50%;
+  }
+}
+
+.jbook {
+  width: 30vmin;
+  aspect-ratio: 16 / 12;
+  position: relative;
+  transform: translate3d(0, 0, 2vmin);
+}
+
+.scroll-section.laptop {
+  padding: 0;
+}
+
+.screen-bear {
+  position: absolute;
+  width: 25%;
+  --base-coat: var(--white);
+  rotate: 180deg;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+}
+
+.screen-bear__eyes {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  -webkit-animation: blink 6s -2s infinite;
+          animation: blink 6s -2s infinite;
+}
+
+.laptop-keyboard {
+  width: 90%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -80%;
+}
+
+.scene__shadow {
+  position: relative;
+}
+
+.scene__shadow:after {
+  background: hsl(0 0% 0% / 0.5);
+  content: "";
+  position: absolute;
+  inset: 5%;
+  filter: blur(10px);
+  -webkit-animation: shadow-in-out both linear;
+          animation: shadow-in-out both linear;
+  animation-timeline: --laptop;
+  animation-range: var(--jump);
+}
+
+@-webkit-keyframes shadow-in-out {
+  0%, 5%, 95%, 100% {
+    opacity: 1;
+  }
+  35%, 65% {
+    opacity: 0;
+  }
+}
+
+@keyframes shadow-in-out {
+  0%, 5%, 95%, 100% {
+    opacity: 1;
+  }
+  35%, 65% {
+    opacity: 0;
+  }
+}
+
+.shell--bottom .cuboid__side:nth-of-type(6) {
+  --b: 0.8;
+}
+
+.shell--bottom .cuboid__side:nth-of-type(2):after {
+  content: "";
+  position: absolute;
+  width: 50%;
+  aspect-ratio: 1 / 3;
+  background: var(--black);
+  left: 50%;
+  top: 10%;
+  translate: -50% 0;
+}
+
+.shell--bottom:after {
+  content: "";
+  width: 32%;
+  aspect-ratio: 4 / 3;
+  background: hsl(0 0% 40%);
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  translate: -50% 0;
+  border-radius: 0.5vmin;
+}
+
+.shell-bear {
+  --base-coat: var(--black);
+  rotate: 180deg;
+  width: 20%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+}
+
+@-webkit-keyframes book-spin {
+  to {
+    transform: rotateZ(-360deg);
+  }
+}
+
+@keyframes book-spin {
+  to {
+    transform: rotateZ(-360deg);
+  }
+}
+
+.scene {
+  -webkit-animation: scale-to-view both linear;
+          animation: scale-to-view both linear;
+  animation-timeline: --laptop;
+  animation-range: var(--straighten);
+  transform: translate3d(0, 0, 100vmin);
+}
+
+@-webkit-keyframes scale-to-view {
+  0% {
+    transform: rotateX(-24deg) rotateY(-32deg) rotateX(90deg) translate3d(0, 0, -20vmin);
+  }
+  to {
+    transform: rotateX(0) rotateY(0) rotateX(90deg) translate3d(0, 0, -12vmin);
+  }
+}
+
+@keyframes scale-to-view {
+  0% {
+    transform: rotateX(-24deg) rotateY(-32deg) rotateX(90deg) translate3d(0, 0, -20vmin);
+  }
+  to {
+    transform: rotateX(0) rotateY(0) rotateX(90deg) translate3d(0, 0, -12vmin);
+  }
+}
+
+.scene__zoom {
+  -webkit-animation: scene-zoom both linear;
+          animation: scene-zoom both linear;
+  animation-timeline: --laptop;
+  animation-range: var(--zoom);  
+}
+
+@-webkit-keyframes scene-zoom {
+  0% {
+    scale: 1;
+  }
+  to {
+    scale: 9;
+  }
+}
+
+@keyframes scene-zoom {
+  0% {
+    scale: 1;
+  }
+  to {
+    scale: 9;
+  }
+}
+
+.shell {
+  position: absolute;
+  inset: 0;
+}
+
+.shell--top {
+  --depth: 2;
+  --color: hsl(0 0% 80%);
+  background: var(--black);
+  transform: rotateX(0deg);
+  transform-origin: 50% 0;
+  -webkit-animation: book-open-top both linear;
+          animation: book-open-top both linear;
+  animation-timeline: --laptop;
+  animation-range: var(--open);
+}
+
+.shell--top:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1vmin solid hsl(0 0% 10%);
+}
+
+@-webkit-keyframes book-open-top {
+  0%, 30% {
+    transform: rotateX(0deg);
+  }
+  40% {
+    transform: rotateX(120deg);
+  }
+  75%, 100% {
+    transform: rotateX(90deg);
+  }
+}
+
+@keyframes book-open-top {
+  0%, 30% {
+    transform: rotateX(0deg);
+  }
+  40% {
+    transform: rotateX(120deg);
+  }
+  75%, 100% {
+    transform: rotateX(90deg);
+  }
+}
+
+@-webkit-keyframes book-open-bottom {
+  0%, 45% {
+    transform: rotateX(0deg);
+  }
+  65% {
+    transform: rotateX(50deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+@keyframes book-open-bottom {
+  0%, 45% {
+    transform: rotateX(0deg);
+  }
+  65% {
+    transform: rotateX(50deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+.shell--bottom {
+  --depth: 2;
+  --color: hsl(0 0% 80%);
+  background: hsl(0 0% 50%);
+  transform-origin: 50% 0;
+  -webkit-animation: book-open-bottom both linear;
+          animation: book-open-bottom both linear;
+  animation-timeline: --laptop;
+  animation-range: var(--open);
+}
+
+.shell--top .cuboid {
+  transform: translate3d(0, 0, calc(1vmin + 1px));
+}
+.shell--bottom .cuboid {
+  transform: translate3d(0, 0, calc(-1vmin - 1px));
+}
+
+/* Sign off */
+.sign-off {
+  height: 100vh;
+  view-timeline: --sign-off;
+}
+
+.sig path {
+	--draw: 1.025;
+	--end: 1.025;
+  stroke-dasharray: var(--end);
+  stroke-dashoffset: var(--draw);
+}
+
+.sig :is(.eye, .nose) {
+	fill: transparent;
+}
+
+.sig {
+  width: max(100px,25vmin);
+  color: var(--white);
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 10;
+  translate: -20% -20%;
+  rotate: -15deg;
+}
+
+.sig path {
+	-webkit-animation: draw both linear;
+	        animation: draw both linear;
+	animation-timeline: --sign-off;
+	animation-range: entry 0% entry 80%;
+}
+.sig :is(.eye, .nose) {
+	-webkit-animation: draw both linear, fill both linear;
+	        animation: draw both linear, fill both linear;
+	animation-timeline: --sign-off;
+}
+.sig :is(.ear, .eye) {
+	animation-range: entry 30% entry 90%;
+}
+.sig .nose {
+	animation-range: entry 40% entry 100%;
+}
+@-webkit-keyframes draw { to { stroke-dashoffset: 0; }}
+@keyframes draw { to { stroke-dashoffset: 0; }}
+@-webkit-keyframes fill { to { fill: currentColor; }}
+@keyframes fill { to { fill: currentColor; }}
+
+/* Cuboid related stuff */
+/* Cuboid boilerplate code */
+.cuboid {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.cuboid__side {
+  background: var(--color);
+  filter: brightness(var(--b, 1));
+  position: absolute;
+}
+.cuboid__side:nth-of-type(1) {
+  --b: 1.1;
+  height: calc(var(--depth, 20) * 1vmin);
+  width: 100%;
+  top: 0;
+  transform: translate(0, -50%) rotateX(90deg);
+}
+.cuboid__side:nth-of-type(2) {
+  --b: 0.9;
+  height: 100%;
+  width: calc(var(--depth, 20) * 1vmin);
+  top: 50%;
+  right: 0;
+  transform: translate(50%, -50%) rotateY(90deg);
+}
+.cuboid__side:nth-of-type(3) {
+  --b: 0.5;
+  width: 100%;
+  height: calc(var(--depth, 20) * 1vmin);
+  bottom: 0;
+  transform: translate(0%, 50%) rotateX(90deg);
+}
+.cuboid__side:nth-of-type(4) {
+  --b: 1;
+  height: 100%;
+  width: calc(var(--depth, 20) * 1vmin);
+  left: 0;
+  top: 50%;
+  transform: translate(-50%, -50%) rotateY(90deg);
+}
+.cuboid__side:nth-of-type(5) {
+  --b: 0.8;
+  height: 100%;
+  width: 100%;
+  transform: translate3d(0, 0, calc(var(--depth, 20) * 0.5vmin));
+  top: 0;
+  left: 0;
+}
+.cuboid__side:nth-of-type(6) {
+  --b: 1.2;
+  height: 100%;
+  width: 100%;
+  transform: translate3d(0, 0, calc(var(--depth, 20) * -0.5vmin)) rotateY(180deg);
+  top: 0;
+  left: 0;
+}
+
+@-webkit-keyframes blink {
+  0%, 46%, 48%, 50%, 100% {
+    scale: 1 1;
+  }
+  47%, 49% {
+    scale: 1 0.01;
+  }
+}
+
+@keyframes blink {
+  0%, 46%, 48%, 50%, 100% {
+    scale: 1 1;
+  }
+  47%, 49% {
+    scale: 1 0.01;
+  }
+}
+
+.bear-link {
+  color: canvasText;
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  width: 48px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  opacity: 0.8;
+}
+
+:where(.x-link, .bear-link):is(:hover, :focus-visible) {
+  opacity: 1;
+}
+.bear-link svg {
+  width: 75%;
+}
+
+.scroll-icon {
+  height: 30px;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  color: currentColor;
+  opacity: 0.5;
+  overflow: visible !important;
+  -webkit-animation: fade-away both linear;
+          animation: fade-away both linear;
+  animation-timeline: scroll(root);
+  animation-range: 50px 100px;
+}
+
+@-webkit-keyframes fade-away {
+	to {
+		translate: 0 -100%;
+		opacity: 0;
+	}
+}
+
+@keyframes fade-away {
+	to {
+		translate: 0 -100%;
+		opacity: 0;
+	}
+}
+
+.scroll-icon path {
+	-webkit-animation: active 4s infinite ease-in-out;
+	        animation: active 4s infinite ease-in-out;
+	transform-box: fill-box;
+	transform-origin: center;
+}
+
+@-webkit-keyframes active {
+	0%, 20%, 30%, 40%, 100% { translate: 0 0; }
+	25%, 35% { translate: 0 -50%; }
+}
+
+@keyframes active {
+	0%, 20%, 30%, 40%, 100% { translate: 0 0; }
+	25%, 35% { translate: 0 -50%; }
+}
+
+</style>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+
+      <svg
+        class="w-9"
+        viewBox="0 0 969 955"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="161.191"
+          cy="320.191"
+          r="133.191"
+          stroke="currentColor"
+          stroke-width="20"
+        ></circle>
+        <circle
+          cx="806.809"
+          cy="320.191"
+          r="133.191"
+          stroke="currentColor"
+          stroke-width="20"
+        ></circle>
+        <circle
+          cx="695.019"
+          cy="587.733"
+          r="31.4016"
+          fill="currentColor"
+        ></circle>
+        <circle
+          cx="272.981"
+          cy="587.733"
+          r="31.4016"
+          fill="currentColor"
+        ></circle>
+        <path
+          d="M564.388 712.083C564.388 743.994 526.035 779.911 483.372 779.911C440.709 779.911 402.356 743.994 402.356 712.083C402.356 680.173 440.709 664.353 483.372 664.353C526.035 664.353 564.388 680.173 564.388 712.083Z"
+          fill="currentColor"
+        ></path>
+        <rect
+          x="310.42"
+          y="448.31"
+          width="343.468"
+          height="51.4986"
+          fill="#FF1E1E"
+        ></rect>
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M745.643 288.24C815.368 344.185 854.539 432.623 854.539 511.741H614.938V454.652C614.938 433.113 597.477 415.652 575.938 415.652H388.37C366.831 415.652 349.37 433.113 349.37 454.652V511.741L110.949 511.741C110.949 432.623 150.12 344.185 219.845 288.24C289.57 232.295 384.138 200.865 482.744 200.865C581.35 200.865 675.918 232.295 745.643 288.24Z"
+          fill="currentColor"
+        ></path>
+      </svg>
+    </a>
+    <svg class="scroll-icon" viewBox="0 0 24 24">
+      <path
+        fill="currentColor"
+        d="M20 6H23L19 2L15 6H18V18H15L19 22L23 18H20V6M9 3.09C11.83 3.57 14 6.04 14 9H9V3.09M14 11V15C14 18.3 11.3 21 8 21S2 18.3 2 15V11H14M7 9H2C2 6.04 4.17 3.57 7 3.09V9Z"
+      ></path>
+    </svg>
+    <header>
+      <h1><span>its</span><br />Comming soon.</h1>
+    </header>
+    <main>
+      <div class="scroll-section laptop">
+        <section>
+          <div class="scene__zoom">
+            <div class="scene">
+              <div class="scene__rock">
+                <div class="scene__spin">
+                  <div class="scene__shadow">
+                    <div class="scene__jump">
+                      <div class="scene__flip">
+                        <!-- This is the spinning 3D laptop -->
+                        <div class="jbook">
+                          <div class="jbook__shell shell shell--top">
+
+
+
+
+
+                            <svg
+                              class="screen-bear"
+                              viewBox="0 0 793 468"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M100.937 244.397C49.2932 231.644 11 185.005 11 129.422C11 64.0195 64.0195 11 129.422 11C175.508 11 215.445 37.325 235.016 75.7579C273.571 54.9524 317.697 43.1437 364.581 43.1437H428.868C475.541 43.1437 519.48 54.8465 557.912 75.4777C577.534 37.1971 617.389 11 663.362 11C728.765 11 781.785 64.0195 781.785 129.422C781.785 184.782 743.798 231.27 692.469 244.241"
+                                stroke="var(--base-coat)"
+                                stroke-width="21"
+                                stroke-linejoin="round"
+                              />
+                              <rect
+                                x="253.112"
+                                y="228.5"
+                                width="284.056"
+                                height="42.5905"
+                                fill="#FF1E1E"
+                              />
+                              <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M613.051 96.1181C670.715 142.386 703.111 215.526 703.111 280.959L504.955 280.959V240.491C504.955 218.952 487.494 201.491 465.955 201.491L324.324 201.491C302.785 201.491 285.324 218.952 285.324 240.491V280.959L88.1448 280.959C88.1448 215.526 120.54 142.386 178.204 96.1181C235.869 49.8504 314.078 23.8574 395.628 23.8574C477.177 23.8574 555.387 49.8504 613.051 96.1181Z"
+                                fill="var(--base-coat)"
+                              />
+                              <g class="screen-bear__eyes">
+                                <circle
+                                  cx="572.438"
+                                  cy="364.836"
+                                  r="25.9698"
+                                  fill="var(--base-coat)"
+                                />
+                                <circle
+                                  cx="223.403"
+                                  cy="364.836"
+                                  r="25.9698"
+                                  fill="var(--base-coat)"
+                                />
+                              </g>
+                              <path
+                                d="M464.755 411.776C464.755 438.167 433.036 467.871 397.753 467.871C362.47 467.871 330.751 438.167 330.751 411.776C330.751 385.385 362.47 372.302 397.753 372.302C433.036 372.302 464.755 385.385 464.755 411.776Z"
+                                fill="var(--base-coat)"
+                              />
+                            </svg>
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="cuboid">
+                              <div class="cuboid__side"></div>
+                              <div class="cuboid__side"></div>
+                              <div class="cuboid__side"></div>
+                              <div class="cuboid__side"></div>
+                              <div class="cuboid__side">
+                                <svg
+                                  class="shell-bear"
+                                  viewBox="0 0 793 468"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M100.937 244.397C49.2932 231.644 11 185.005 11 129.422C11 64.0195 64.0195 11 129.422 11C175.508 11 215.445 37.325 235.016 75.7579C273.571 54.9524 317.697 43.1437 364.581 43.1437H428.868C475.541 43.1437 519.48 54.8465 557.912 75.4777C577.534 37.1971 617.389 11 663.362 11C728.765 11 781.785 64.0195 781.785 129.422C781.785 184.782 743.798 231.27 692.469 244.241"
+                                    stroke="var(--base-coat)"
+                                    stroke-width="21"
+                                    stroke-linejoin="round"
+                                  />
+                                  <rect
+                                    x="253.112"
+                                    y="228.5"
+                                    width="284.056"
+                                    height="42.5905"
+                                    fill="#FF1E1E"
+                                  />
+                                  <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M613.051 96.1181C670.715 142.386 703.111 215.526 703.111 280.959L504.955 280.959V240.491C504.955 218.952 487.494 201.491 465.955 201.491L324.324 201.491C302.785 201.491 285.324 218.952 285.324 240.491V280.959L88.1448 280.959C88.1448 215.526 120.54 142.386 178.204 96.1181C235.869 49.8504 314.078 23.8574 395.628 23.8574C477.177 23.8574 555.387 49.8504 613.051 96.1181Z"
+                                    fill="var(--base-coat)"
+                                  />
+                                  <g class="shell-bear__eyes">
+                                    <circle
+                                      cx="572.438"
+                                      cy="364.836"
+                                      r="25.9698"
+                                      fill="var(--base-coat)"
+                                    />
+                                    <circle
+                                      cx="223.403"
+                                      cy="364.836"
+                                      r="25.9698"
+                                      fill="var(--base-coat)"
+                                    />
+                                  </g>
+                                  <path
+                                    d="M464.755 411.776C464.755 438.167 433.036 467.871 397.753 467.871C362.47 467.871 330.751 438.167 330.751 411.776C330.751 385.385 362.47 372.302 397.753 372.302C433.036 372.302 464.755 385.385 464.755 411.776Z"
+                                    fill="var(--base-coat)"
+                                  />
+                                </svg>
+                              </div>
+                              <div class="cuboid__side"></div>
+                            </div>
+                          </div>
+                          <div class="jbook__shell shell shell--bottom">
+                            <svg
+                              class="laptop-keyboard"
+                              xmlns="http://www.w3.org/2000/svg"
+                              version="1.0"
+                              viewBox="0 0 1280 411"
+                            >
+                              <path
+                                d="M2 2C.1 3.9 0 5.3 0 36.3c0 30.1.1 32.5 1.8 34S7.3 72 36.3 72c28.3 0 32.8-.2 34.1-1.6 1.4-1.3 1.6-5.9 1.6-34.3 0-30.5-.1-32.9-1.8-34.4S64.7 0 36.2 0C5.3 0 3.9.1 2 2zM91.7 1.8c-1.5 1.7-1.7 5.6-1.7 35 0 31.7.1 33.2 1.9 34.2 1.3.6 14 1 34.5 1 32.4 0 32.5 0 34-2.2 1.4-1.9 1.6-6.9 1.6-34 0-30.5-.1-31.9-2-33.8-1.9-1.9-3.3-2-34.3-2-30.1 0-32.5.1-34 1.8zM180 2.7c-2 2.6-2.1 3.4-1.8 34.6.3 30.2.4 31.9 2.2 33.3 1.6 1.1 8 1.4 34.7 1.4 32.7 0 32.8 0 34.3-2.2 1.4-1.9 1.6-6.9 1.6-34 0-30.5-.1-31.9-2-33.8-1.9-1.9-3.3-2-34.4-2h-32.5L180 2.7zM269.4 1.4c-1.8 1.4-1.9 3.1-2.2 33.6-.2 27.9-.1 32.6 1.3 34.6L270 72h33.5c33.4 0 33.4 0 34.9-2.2 1.4-1.9 1.6-6.9 1.6-34 0-30.5-.1-31.9-2-33.8-1.9-1.9-3.3-2-34.3-2-26.3 0-32.7.3-34.3 1.4zM355.7 1.8c-1.5 1.7-1.7 5.5-1.7 34.5 0 28.3.2 32.8 1.6 34.1 1.3 1.4 5.9 1.6 34.3 1.6 30.5 0 32.9-.1 34.4-1.8s1.7-5.5 1.7-34c0-30.9-.1-32.3-2-34.2-1.9-1.9-3.3-2-34.3-2-30.1 0-32.5.1-34 1.8zM445 2c-1.9 1.9-2 3.3-2 33.8 0 27.1.2 32.1 1.6 34 1.5 2.2 1.5 2.2 34.9 2.2H513l1.5-2.4c1.4-2 1.5-6.7 1.3-34.6-.3-30.5-.4-32.2-2.2-33.6-1.6-1.1-8-1.4-34.3-1.4-31 0-32.4.1-34.3 2zM534 2c-1.9 1.9-2 3.3-2 33.8 0 27.1.2 32.1 1.6 34 1.5 2.2 1.6 2.2 34.3 2.2 24.6 0 33.1-.3 34.4-1.3 1.5-1.1 1.7-4.5 1.7-34.1.1-29.6-.1-33-1.6-34.7C600.8.1 598.8 0 568.3 0c-31 0-32.4.1-34.3 2zM623 2c-1.9 1.9-2 3.3-2 33.8 0 27.1.2 32.1 1.6 34 1.5 2.2 1.6 2.2 34 2.2 20.5 0 33.2-.4 34.5-1 1.8-1 1.9-2.5 1.9-34.4 0-31-.1-33.4-1.8-34.9s-5.5-1.7-34-1.7c-30.9 0-32.3.1-34.2 2zM712.7 1.8c-1.5 1.7-1.7 5.5-1.7 34.5 0 28.3.2 32.8 1.6 34.1 1.3 1.4 5.9 1.6 34.3 1.6 30.5 0 32.9-.1 34.4-1.8s1.7-5.5 1.7-34c0-30.9-.1-32.3-2-34.2-1.9-1.9-3.3-2-34.3-2-30.1 0-32.5.1-34 1.8zM801.7 1.8c-1.5 1.7-1.7 5.6-1.7 35 0 31.7.1 33.2 1.9 34.2 1.3.6 14 1 34.5 1 32.4 0 32.5 0 34-2.2 1.4-1.9 1.6-6.9 1.6-34 0-30.5-.1-31.9-2-33.8-1.9-1.9-3.3-2-34.3-2-30.1 0-32.5.1-34 1.8zM893.7 1.8c-1.5 1.7-1.7 5.5-1.7 34.4 0 30.2.1 32.6 1.8 34.1s5.5 1.7 34.4 1.7c30.2 0 32.6-.1 34.1-1.8s1.7-5.5 1.7-34.4c0-30.2-.1-32.6-1.8-34.1S956.7 0 927.8 0c-30.2 0-32.6.1-34.1 1.8zM982.7 1.8c-1.5 1.7-1.7 5.5-1.7 34.4 0 30.2.1 32.6 1.8 34.1s5.5 1.7 34.4 1.7c30.2 0 32.6-.1 34.1-1.8s1.7-5.5 1.7-34.5c0-32.5 0-32.6-2.2-34.1-1.9-1.4-6.9-1.6-34.4-1.6-29.8 0-32.2.1-33.7 1.8zM1066 2c-1.9 1.9-2 3.3-2 33.8 0 27.1.2 32.1 1.6 34 1.5 2.2 1.5 2.2 34.9 2.2s33.4 0 34.9-2.2c1.4-1.9 1.6-6.9 1.6-34 0-30.5-.1-31.9-2-33.8-1.9-1.9-3.3-2-34.5-2s-32.6.1-34.5 2zM1152.2 1.2c-.9.9-1.2 10-1.2 34.8 0 24.8.3 33.9 1.2 34.8.9.9 16.4 1.2 63.5 1.2 60.5 0 62.3-.1 63.3-1.9.6-1.3 1-14 1-34.4 0-30.1-.1-32.5-1.8-34s-7.5-1.7-63.3-1.7c-46.5 0-61.8.3-62.7 1.2zM2 88c-1.9 1.9-2 3.3-2 34.3 0 30.1.1 32.5 1.8 34s7.6 1.7 64 1.7c60.4 0 62.2-.1 63.2-1.9.6-1.3 1-14 1-34.4 0-30.1-.1-32.5-1.8-34s-7.5-1.7-63-1.7C5.3 86 4 86 2 88zM143.1 88.6c-2 2.6-2.1 3.8-2.1 33.8 0 26.6.2 31.5 1.6 33.4 1.5 2.2 1.5 2.2 34.9 2.2s33.4 0 34.9-2.2c1.4-1.9 1.6-6.8 1.6-33.4 0-30-.1-31.2-2.1-33.8l-2-2.6h-64.8l-2 2.6zM232 88c-1.9 1.9-2 3.3-2 33.8 0 27.1.2 32.1 1.6 34 1.5 2.2 1.5 2.2 34.9 2.2s33.4 0 34.9-2.2c1.4-1.9 1.6-6.8 1.6-33.4 0-30-.1-31.2-2.1-33.8l-2-2.6h-32.5c-31.1 0-32.5.1-34.4 2zM321 88c-1.9 1.9-2 3.3-2 33.8 0 27.1.2 32.1 1.6 34 1.5 2.2 1.5 2.2 34.8 2.2 24.5 0 33.5-.3 34.4-1.2.9-.9 1.2-9.9 1.2-34.4 0-33.3 0-33.3-2.2-34.8-1.9-1.4-6.9-1.6-34-1.6-30.5 0-31.9.1-33.8 2zM411.2 87.6c-2.2 1.5-2.2 1.6-2.2 34 0 20.5.4 33.2 1 34.5 1 1.8 2.5 1.9 34.4 1.9 31 0 33.4-.1 34.9-1.8s1.7-5.5 1.7-34c0-30.9-.1-32.3-2-34.2-1.9-1.9-3.3-2-33.8-2-27.1 0-32.1.2-34 1.6zM497 88c-1.9 1.9-2 3.3-2 34.3 0 30.1.1 32.5 1.8 34s5.6 1.7 34.8 1.7c24.3 0 33.3-.3 34.2-1.2.9-.9 1.2-9.9 1.2-34.4 0-33.3 0-33.3-2.2-34.8-1.9-1.4-6.9-1.6-34-1.6-30.5 0-31.9.1-33.8 2zM586 88c-1.9 1.9-2 3.3-2 34.3 0 30.1.1 32.5 1.8 34s5.6 1.7 35 1.7c31.7 0 33.2-.1 34.2-1.9.6-1.3 1-14 1-34.5 0-32.4 0-32.5-2.2-34-1.9-1.4-6.9-1.6-34-1.6-30.5 0-31.9.1-33.8 2zM675.2 87.6c-2.2 1.5-2.2 1.6-2.2 34.4 0 28.5.2 33.1 1.6 34.4 1.3 1.4 5.9 1.6 34.4 1.6s33.1-.2 34.4-1.6c1.4-1.3 1.6-5.9 1.6-34.4 0-32.8 0-32.9-2.2-34.4-1.9-1.4-6.9-1.6-33.8-1.6s-31.9.2-33.8 1.6zM764.1 88.6c-2 2.6-2.1 3.8-2.1 33.8 0 26.6.2 31.5 1.6 33.4 1.5 2.2 1.5 2.2 34.9 2.2s33.4 0 34.9-2.2c1.4-1.9 1.6-6.9 1.6-34 0-30.5-.1-31.9-2-33.8-1.9-1.9-3.3-2-34.4-2h-32.5l-2 2.6zM853.1 88.6c-2 2.6-2.1 3.8-2.1 33.8 0 26.6.2 31.5 1.6 33.4 1.5 2.2 1.5 2.2 34.9 2.2s33.4 0 34.9-2.2c1.4-1.9 1.6-6.8 1.6-33.4 0-30-.1-31.2-2.1-33.8l-2-2.6h-64.8l-2 2.6zM942 88c-1.9 1.9-2 3.3-2 33.8 0 27.1.2 32.1 1.6 34 1.5 2.2 1.5 2.2 34.9 2.2s33.4 0 34.9-2.2c1.4-1.9 1.6-6.8 1.6-33.4 0-30-.1-31.2-2.1-33.8l-2-2.6h-32.5c-31.1 0-32.5.1-34.4 2zM1034.4 88.5l-2.5 2.5.3 31.8c.2 25.2.6 32.2 1.7 33.5 1.2 1.5 4.9 1.7 34.7 1.7 33.3 0 33.3 0 34.8-2.2 1.4-1.9 1.6-6.9 1.6-34 0-30.5-.1-31.9-2-33.8-1.9-1.9-3.3-2-34-2h-32.1l-2.5 2.5zM1123.1 88.6c-2 2.6-2.1 3.8-2.1 33.8 0 26.6.2 31.5 1.6 33.4 1.5 2.2 1.5 2.2 34.9 2.2s33.4 0 34.9-2.2c1.4-1.9 1.6-6.9 1.6-34 0-30.5-.1-31.9-2-33.8-1.9-1.9-3.3-2-34.4-2h-32.5l-2 2.6zM1207 88c-1.9 1.9-2 3.3-2 34.3 0 30.1.1 32.5 1.8 34s5.6 1.7 34.8 1.7c24.3 0 33.3-.3 34.2-1.2.9-.9 1.2-9.9 1.2-34.4 0-33.3 0-33.3-2.2-34.8-1.9-1.4-6.9-1.6-34-1.6-30.5 0-31.9.1-33.8 2zM2 174c-1.9 1.9-2 3.3-2 34.3 0 26.3.3 32.7 1.4 34.3 1.4 1.8 3.5 1.9 80 2.2l78.7.2 2.4-2.4 2.5-2.5v-63.2l-2.5-2.4-2.4-2.5H82c-76.7 0-78 0-80 2zM180.4 174.5l-2.5 2.5.3 32.1.3 32.1 2.4 1.9c2.2 1.8 4.3 1.9 33.6 1.9 30.1 0 31.3-.1 33.9-2.1l2.6-2v-64.8l-2.6-2c-2.6-2-3.8-2.1-34.1-2.1h-31.4l-2.5 2.5zM269.5 174.5l-2.5 2.4v63.2l2.5 2.4 2.4 2.5h63.2l2.4-2.5 2.5-2.4v-63.2l-2.5-2.4-2.4-2.5h-63.2l-2.4 2.5zM359 174c-1.9 1.9-2 3.3-2 34.5s.1 32.6 2 34.5c1.9 1.9 3.3 2 33.8 2 27.1 0 32.1-.2 34-1.6 2.2-1.5 2.2-1.5 2.2-34.9s0-33.4-2.2-34.9c-1.9-1.4-6.9-1.6-34-1.6-30.5 0-31.9.1-33.8 2zM448 174c-1.9 1.9-2 3.3-2 34.5s.1 32.6 2 34.5c1.9 1.9 3.3 2 33.8 2 27.1 0 32.1-.2 34-1.6 2.2-1.5 2.2-1.5 2.2-34.9s0-33.4-2.2-34.9c-1.9-1.4-6.9-1.6-34-1.6-30.5 0-31.9.1-33.8 2zM534.6 174.1l-2.6 2v64.8l2.6 2c2.6 2 3.8 2.1 33.8 2.1 26.6 0 31.5-.2 33.4-1.6 2.2-1.5 2.2-1.5 2.2-34.9s0-33.4-2.2-34.9c-1.9-1.4-6.8-1.6-33.4-1.6-30 0-31.2.1-33.8 2.1zM624.5 173.2c-1.1.6-2.3 1.6-2.7 2.2-.4.6-.8 15.6-.8 33.3v32.2l2.6 2c2.6 2 3.8 2.1 33.8 2.1 26.6 0 31.5-.2 33.4-1.6 2.2-1.5 2.2-1.5 2.2-34.9s0-33.4-2.2-34.9c-1.9-1.4-6.8-1.6-33.3-1.6-21.2.1-31.6.4-33 1.2zM713.2 173.6c-2.2 1.5-2.2 1.5-2.2 34.9V242l2.4 1.5c2 1.4 6.7 1.5 34.6 1.3 30.5-.3 32.2-.4 33.6-2.2 1.1-1.6 1.4-8 1.4-34.3 0-31-.1-32.4-2-34.3-1.9-1.9-3.3-2-33.8-2-27.1 0-32.1.2-34 1.6zM802.2 173.6c-2.2 1.5-2.2 1.5-2.2 34.9s0 33.4 2.2 34.9c1.9 1.4 6.8 1.6 33.4 1.6 30 0 31.2-.1 33.8-2.1l2.6-2v-32.2c0-17.7-.4-32.7-.8-33.3-2-3.1-5.5-3.4-35.9-3.4-26.3 0-31.2.2-33.1 1.6zM891.2 173.6c-2.2 1.5-2.2 1.5-2.2 34.9s0 33.4 2.2 34.9c1.9 1.4 6.8 1.6 33.4 1.6 30 0 31.2-.1 33.8-2.1l2.6-2v-64.8l-2.6-2c-2.6-2-3.8-2.1-33.8-2.1-26.6 0-31.5.2-33.4 1.6zM980.2 174c-2.2 2.1-2.2 2.4-2.2 34.5v32.4l2.6 2c2.6 2 3.8 2.1 33.8 2.1 26.6 0 31.5-.2 33.4-1.6 2.2-1.5 2.2-1.5 2.2-34.9s0-33.4-2.2-34.9c-1.9-1.4-6.9-1.6-33.8-1.6-30.4 0-31.7.1-33.8 2zM1072.2 173.6c-2.2 1.5-2.2 1.5-2.2 34.9V242l2.4 1.5c2 1.4 6.7 1.5 34.6 1.3 30.5-.3 32.2-.4 33.6-2.2 1.1-1.6 1.4-8 1.4-34.3 0-31-.1-32.4-2-34.3-1.9-1.9-3.3-2-33.8-2-27.1 0-32.1.2-34 1.6zM1155.5 174.5l-2.5 2.4v63.2l2.5 2.4 2.4 2.5h57.3c50.3 0 57.6-.2 59.6-1.6 2.2-1.5 2.2-1.5 2.2-34.9s0-33.4-2.2-34.9c-2-1.4-9.3-1.6-59.6-1.6h-57.3l-2.4 2.5zM1.7 256.8C.2 258.4 0 262.3 0 290.4c0 31.4.3 34.8 3.4 36.8.6.4 41.7.8 91.3.8h90.2l1.6-3c2.3-4.4 2.2-66.1-.1-68.4-1.4-1.4-11.1-1.6-92.3-1.6-86.7 0-90.9.1-92.4 1.8zM206.1 257.6c-2 2.6-2.1 3.8-2.1 33.8 0 26.6.2 31.5 1.6 33.4 1.5 2.2 1.5 2.2 34.9 2.2s33.4 0 34.9-2.2c1.4-1.9 1.6-6.9 1.6-33.8v-31.7l-2.3-2.1c-2.3-2.2-2.8-2.2-34.4-2.2h-32.2l-2 2.6zM295.2 257.3c-2.2 2.3-2.2 2.9-2.2 33.8 0 26.8.2 31.8 1.6 33.7 1.5 2.2 1.5 2.2 34.9 2.2s33.4 0 34.9-2.2c1.4-1.9 1.6-6.8 1.6-33.4 0-30-.1-31.2-2.1-33.8l-2-2.6h-64.6l-2.1 2.3zM385 257c-1.9 1.9-2 3.3-2 34.4 0 28.2.2 32.7 1.6 34 1.3 1.4 5.9 1.6 34.9 1.6 32 0 33.5-.1 34.5-1.9.6-1.3 1-14 1-34.5 0-32.4 0-32.5-2.2-34-1.9-1.4-6.9-1.6-34-1.6-30.5 0-31.9.1-33.8 2zM474.2 256.6c-2.2 1.5-2.2 1.6-2.2 34 0 20.5.4 33.2 1 34.5 1 1.8 2.5 1.9 34.5 1.9 29 0 33.6-.2 34.9-1.6 1.4-1.3 1.6-5.8 1.6-34 0-31.1-.1-32.5-2-34.4-1.9-1.9-3.3-2-33.8-2-27.1 0-32.1.2-34 1.6zM560 257c-1.9 1.9-2 3.3-2 34.3 0 30.1.1 32.5 1.8 34s5.6 1.7 34.8 1.7c24.3 0 33.3-.3 34.2-1.2.9-.9 1.2-9.9 1.2-34.4 0-33.3 0-33.3-2.2-34.8-1.9-1.4-6.9-1.6-34-1.6-30.5 0-31.9.1-33.8 2zM649 257c-1.9 1.9-2 3.3-2 34.3 0 30.1.1 32.5 1.8 34s5.6 1.7 34.8 1.7c24.3 0 33.3-.3 34.2-1.2.9-.9 1.2-9.9 1.2-34.4 0-33.3 0-33.3-2.2-34.8-1.9-1.4-6.9-1.6-34-1.6-30.5 0-31.9.1-33.8 2zM739.2 256.6c-2.2 1.5-2.2 1.5-2.2 34.8 0 24.5.3 33.5 1.2 34.4.9.9 9.9 1.2 34.3 1.2 30.9 0 33.3-.1 34.8-1.8s1.7-5.5 1.7-34c0-30.9-.1-32.3-2-34.2-1.9-1.9-3.3-2-33.8-2-27.1 0-32.1.2-34 1.6zM827.5 257.5l-2.5 2.4v31.3c0 26.8.2 31.7 1.6 33.6 1.5 2.2 1.5 2.2 34.9 2.2s33.4 0 34.9-2.2c1.4-1.9 1.6-6.9 1.6-34 0-30.5-.1-31.9-2-33.8-1.9-1.9-3.3-2-34-2h-32.1l-2.4 2.5zM916.1 257.6c-2 2.6-2.1 3.8-2.1 33.8 0 26.6.2 31.5 1.6 33.4 1.5 2.2 1.5 2.2 34.9 2.2s33.4 0 34.9-2.2c1.4-1.9 1.6-6.9 1.6-33.8v-31.7l-2.3-2.1c-2.3-2.2-2.8-2.2-34.4-2.2h-32.2l-2 2.6zM1006 257c-1.9 1.9-2 3.3-2 34.3 0 30.1.1 32.5 1.8 34s5.6 1.7 35 1.7c31.7 0 33.2-.1 34.2-1.9.6-1.3 1-14 1-34.5 0-32.4 0-32.5-2.2-34-1.9-1.4-6.9-1.6-34-1.6-30.5 0-31.9.1-33.8 2zM1091.6 256.6c-2.3 2.3-2.4 64-.1 68.4l1.6 3h180.8l1.5-2.2c1.4-1.9 1.6-7 1.6-35.5 0-31.8-.1-33.3-1.9-34.3-1.3-.7-31.8-1-92-1-80.4 0-90.1.2-91.5 1.6zM1.7 340.8c-1.5 1.7-1.7 5.5-1.7 34 0 30.9.1 32.3 2 34.2 1.9 1.9 3.3 2 34.3 2 30.1 0 32.5-.1 34-1.8s1.7-5.5 1.7-34.5c0-28.3-.2-32.8-1.6-34.1-1.3-1.4-5.9-1.6-34.3-1.6-30.5 0-32.9.1-34.4 1.8zM91.8 340.1c-1.7.9-1.8 3.6-1.8 34.3 0 31 .1 33.4 1.8 34.9s5.5 1.7 34 1.7c30.9 0 32.3-.1 34.2-2 1.9-1.9 2-3.3 2-33.8 0-27.1-.2-32.1-1.6-34-1.5-2.2-1.5-2.2-34.2-2.2-20.3 0-33.4.4-34.4 1.1zM180.4 340.4c-1.8 1.4-1.9 3.1-2.2 33.3-.3 31.2-.2 32 1.8 34.6l2.1 2.7h32.5c31.1 0 32.5-.1 34.4-2 1.9-1.9 2-3.3 2-33.8 0-27.1-.2-32.1-1.6-34-1.5-2.2-1.6-2.2-34.3-2.2-26.7 0-33.1.3-34.7 1.4zM268.5 341.4c-1.4 2-1.5 6.7-1.3 34.6.3 30.5.4 32.2 2.2 33.6 1.6 1.1 8 1.4 34.3 1.4 31 0 32.4-.1 34.3-2 1.9-1.9 2-3.3 2-33.8 0-27.1-.2-32.1-1.6-34-1.5-2.2-1.5-2.2-34.9-2.2H270l-1.5 2.4zM359.6 341.1l-2.6 2v31.8c0 31 0 31.8 2.1 33.7 2.1 1.9 9 1.9 318.8 2.2 174.1.1 318.1 0 319.9-.3 1.8-.3 4.2-1.5 5.3-2.6 1.8-1.8 1.9-3.5 1.9-32.3 0-16.7-.3-31.2-.6-32.1-1.9-4.7 16-4.5-324.2-4.5H362.3l-2.7 2.1zM1019.7 340.8c-1.5 1.7-1.7 5.5-1.7 34.4 0 30.2.1 32.6 1.8 34.1 1.7 1.6 9 1.7 84.3 1.7 73 0 82.7-.2 84.7-1.6 2.2-1.5 2.2-1.6 2.2-34.3 0-30.5-.1-32.9-1.8-34.4-1.7-1.6-9-1.7-84.9-1.7-79.1 0-83.1.1-84.6 1.8zM1206.7 340.8c-1.5 1.7-1.7 5.5-1.7 34 0 30.9.1 32.3 2 34.2 1.9 1.9 3.3 2 34.3 2 30.1 0 32.5-.1 34-1.8s1.7-5.5 1.7-34.5c0-28.3-.2-32.8-1.6-34.1-1.3-1.4-5.9-1.6-34.3-1.6-30.5 0-32.9.1-34.4 1.8z"
+                              />
+                            </svg>
+                            <div class="cuboid">
+                              <div class="cuboid__side"></div>
+                              <div class="cuboid__side"></div>
+                              <div class="cuboid__side"></div>
+                              <div class="cuboid__side"></div>
+                              <div class="cuboid__side"></div>
+                              <div class="cuboid__side"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="scroll-section sign-off">
+        <section>
+
+
+
+
+
+        </section>
+      </div>
+    </main>
+
+<!-- partial -->
+  
+</body>
+</html>
