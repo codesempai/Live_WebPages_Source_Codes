@@ -1,0 +1,4079 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"></meta>
+    <title>Markdown to PDF Converter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></link>
+    <style>
+      
+      
+      
+      
+      
+.item-post h1.entry-title {
+    padding: 13px;
+}
+  
+  
+.sidebar>.widget {
+
+    display:none;
+}
+  
+#sidebar-wrapper {
+    display: none;
+}
+ 
+.entry-content-wrap {
+padding: 0rem 0rem 0rem; 
+margin:  0;
+width: 130%; 
+}
+  
+ @media only screen and (max-width: 600px) {
+.entry-content-wrap {
+width: 100%; 
+}
+}
+  
+  
+ .comment-form {
+width: 130%; 
+
+} 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+        /* Base Styles */
+        :root {
+            /* Dark Theme (Default) */
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-tertiary: #252a3a;
+            --text-primary: #ffffff;
+            --text-secondary: #b8c5d1;
+            --text-muted: #8b949e;
+            --border-color: #30363d;
+            --accent-color: #58a6ff;
+            --accent-hover: #4493e2;
+            --success-color: #238636;
+            --code-bg: #161b22;
+            --code-border: #30363d;
+            --table-header-bg: #21262d;
+            --blockquote-border: #58a6ff;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --loading-bg: #21262d;
+        }
+
+        [data-theme="light"] {
+            /* Light Theme */
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f8fafc;
+            --text-primary: #1f2937;
+            --text-secondary: #374151;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --success-color: #059669;
+            --code-bg: #f1f5f9;
+            --code-border: #e2e8f0;
+            --table-header-bg: #f8fafc;
+            --blockquote-border: #3b82f6;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --loading-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 10px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Remove scrollbar for webkit browsers */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+
+      
+
+        /* Modern Professional CSS */
+        .zx {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px var(--shadow-color);
+            overflow: hidden;
+            height: calc(100vh - 20px);
+            display: flex;
+            flex-direction: column;
+            min-height: 500px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .qz {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .qz h1 {
+            font-size: clamp(20px, 4vw, 28px);
+            font-weight: 600;
+            margin: 0;
+            flex-shrink: 0;
+            color: var(--text-primary);
+            letter-spacing: -0.025em;
+        }
+
+        .vx {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .jk {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            min-height: 40px;
+            font-family: inherit;
+        }
+
+        .jk-primary {
+            background: var(--accent-color);
+            color: white;
+            border: 1px solid var(--accent-color);
+        }
+
+        .jk-primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(88, 166, 255, 0.4);
+        }
+
+        .jk-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .jk-secondary:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--text-muted);
+            transform: translateY(-1px);
+        }
+
+        .wx {
+            flex: 1;
+            display: flex;
+            height: calc(100% - 140px);
+            min-height: 0;
+        }
+
+        .mdx {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-color);
+            min-width: 0;
+            background: var(--bg-secondary);
+        }
+
+        .zen {
+            background: var(--bg-tertiary);
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .neo {
+            flex: 1;
+            border: none;
+            padding: 20px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Courier New', monospace;
+            font-size: clamp(13px, 2.5vw, 15px);
+            line-height: 1.6;
+            resize: none;
+            outline: none;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            min-height: 200px;
+        }
+
+        .neo::placeholder {
+            color: var(--text-muted);
+        }
+
+        .ace {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-secondary);
+            min-width: 0;
+        }
+
+        .arc {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background: var(--bg-secondary);
+            word-wrap: break-word;
+            -webkit-overflow-scrolling: touch;
+            color: var(--text-primary);
+        }
+
+        .arc h1 {
+            font-size: clamp(28px, 5vw, 36px);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .arc h2 {
+            font-size: clamp(22px, 4vw, 28px);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .arc h3 {
+            font-size: clamp(18px, 3.5vw, 22px);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .arc h4 {
+            font-size: clamp(16px, 3vw, 20px);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .arc h5 {
+            font-size: clamp(14px, 2.5vw, 18px);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .arc h6 {
+            font-size: clamp(13px, 2.5vw, 16px);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .arc h1,
+        .arc h2,
+        .arc h3,
+        .arc h4,
+        .arc h5,
+        .arc h6 {
+            margin-top: clamp(24px, 4vw, 32px);
+            margin-bottom: clamp(12px, 3vw, 16px);
+        }
+
+        .arc p {
+            margin-bottom: clamp(16px, 3vw, 20px);
+            line-height: 1.7;
+            color: var(--text-secondary);
+            font-size: clamp(15px, 2.5vw, 16px);
+        }
+
+        .arc code {
+            background: var(--code-bg);
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Courier New', monospace;
+            font-size: clamp(13px, 2vw, 14px);
+            color: var(--accent-color);
+            border: 1px solid var(--code-border);
+        }
+
+        .arc pre {
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: clamp(16px, 3vw, 20px);
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid var(--code-border);
+        }
+
+        .arc pre code {
+            background: none;
+            padding: 0;
+            border: none;
+        }
+
+        .arc ul,
+        .arc ol {
+            margin-bottom: clamp(16px, 3vw, 20px);
+            padding-left: clamp(24px, 5vw, 32px);
+        }
+
+        .arc li {
+            margin-bottom: 6px;
+            font-size: clamp(15px, 2.5vw, 16px);
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .arc blockquote {
+            border-left: 4px solid var(--blockquote-border);
+            padding-left: clamp(16px, 3vw, 20px);
+            margin-left: 0;
+            margin-bottom: clamp(16px, 3vw, 20px);
+            color: var(--text-muted);
+            font-style: italic;
+            background: var(--bg-tertiary);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .arc table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: clamp(16px, 3vw, 20px);
+            font-size: clamp(14px, 2.5vw, 15px);
+            overflow-x: auto;
+            display: block;
+            white-space: nowrap;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .arc th,
+        .arc td {
+            border: 1px solid var(--border-color);
+            padding: clamp(10px, 1.5vw, 14px);
+            text-align: left;
+        }
+
+        .arc th {
+            background: var(--table-header-bg);
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .arc td {
+            color: var(--text-secondary);
+        }
+
+        .q-load {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--loading-bg);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px var(--shadow-color);
+            z-index: 1000;
+            border: 1px solid var(--border-color);
+        }
+
+        .q-load.show {
+            display: block;
+        }
+
+        .q-spin {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .x-bar {
+            background: var(--bg-tertiary);
+            padding: 12px 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: clamp(11px, 2vw, 13px);
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        /* Mobile and Tablet Styles */
+        @media (max-width: 1024px) {
+            .wx {
+                flex-direction: column;
+                height: calc(100% - 140px);
+            }
+            
+            .mdx,
+            .ace {
+                flex: 1;
+                min-height: 200px;
+                max-height: none;
+            }
+            
+            .mdx {
+                border-right: none;
+                border-bottom: 1px solid #e1e5e9;
+                max-height: 50%;
+            }
+            
+            .ace {
+                max-height: 50%;
+            }
+            
+            .neo {
+                min-height: 150px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .zx {
+                border-radius: 10px;
+                height: calc(100vh - 10px);
+            }
+            
+            .qz {
+                padding: 10px 15px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+            
+            .qz h1 {
+                text-align: center;
+                font-size: 20px;
+            }
+            
+            .vx {
+                justify-content: center;
+                gap: 10px;
+            }
+            
+            .jk {
+                flex: 1;
+                justify-content: center;
+                padding: 10px 12px;
+                font-size: 13px;
+                min-width: 0;
+            }
+            
+            .zen {
+                padding: 10px 15px;
+                text-align: center;
+                font-size: 13px;
+            }
+            
+            .neo {
+                padding: 12px;
+                font-size: 14px;
+            }
+            
+            .arc {
+                padding: 12px;
+            }
+            
+            .wx {
+                height: calc(100% - 160px);
+            }
+            
+            .x-bar {
+                padding: 8px 15px;
+                flex-direction: column;
+                gap: 5px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .vx {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .jk {
+                width: 100%;
+                padding: 12px;
+            }
+            
+            .neo {
+                font-size: 13px;
+                padding: 10px;
+            }
+            
+            .arc {
+                padding: 10px;
+            }
+            
+            .wx {
+                height: calc(100% - 200px);
+            }
+        }
+
+        /* Touch-friendly improvements */
+        @media (hover: none) {
+            .jk:hover {
+                transform: none;
+            }
+            
+            .jk:active {
+                transform: scale(0.98);
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+            
+            .neo {
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        /* Landscape orientation adjustments */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .wx {
+                flex-direction: row;
+                height: calc(100% - 140px);
+            }
+            
+            .mdx {
+                border-right: 1px solid #e1e5e9;
+                border-bottom: none;
+                max-height: none;
+            }
+            
+            .ace {
+                max-height: none;
+            }
+        }
+
+        /* High DPI displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .zx {
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        /* Copy Dropdown Styles */
+        .copy-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dropdown-arrow {
+            font-size: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .copy-btn.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .copy-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 10px 25px var(--shadow-color);
+            z-index: 1000;
+            min-width: 180px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .copy-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .copy-menu button {
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            background: none;
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-secondary);
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .copy-menu button:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .copy-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success-color);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px var(--shadow-color);
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .copy-notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .wx {
+                flex-direction: column;
+            }
+
+            .mdx,
+            .ace {
+                max-height: none;
+            }
+        }
+
+        /* Copy responsive styles */
+        @media (max-width: 768px) {
+            .copy-menu {
+                right: 0;
+                left: auto;
+                min-width: 160px;
+            }
+            
+            .copy-notification {
+                left: 20px;
+                right: 20px;
+                text-align: center;
+            }
+            
+            .vx {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .copy-menu button {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+            
+            .copy-notification {
+                font-size: 14px;
+                padding: 10px 16px;
+            }
+        }
+
+        /* High DPI displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .zx {
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        /* Settings Panel Styles */
+        .editor-tabs {
+            display: flex;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .editor-tab {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 12px 16px;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            border-bottom: 3px solid transparent;
+        }
+
+        .editor-tab:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+
+        .editor-tab.active {
+            background: var(--bg-secondary);
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
+        }
+
+        .editor-tab i {
+            font-size: 13px;
+        }
+
+        .editor-content {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-panel.active {
+            opacity: 1;
+            transform: translateX(0);
+            position: relative;
+        }
+
+        .editor-panel.slide-out-left {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        .editor-panel.slide-in-right {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .settings-panel {
+            background: var(--bg-secondary);
+        }
+
+        .settings-content {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Settings Sub-tabs */
+        .settings-tabs {
+            display: flex;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border-color);
+            margin: 0;
+            padding: 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .settings-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .settings-tab {
+            flex: 0 0 auto;
+            min-width: 120px;
+            background: none;
+            border: none;
+            padding: 10px 16px;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            position: relative;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+        }
+
+        .settings-tab:hover {
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+        }
+
+        .settings-tab.active {
+            background: var(--bg-secondary);
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
+        }
+
+        .settings-tab i {
+            font-size: 11px;
+        }
+
+        .settings-tab-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .settings-tab-content.active {
+            display: block;
+        }
+
+        .setting-group {
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .settings-panel.active .setting-group:nth-child(1) { animation-delay: 0.1s; }
+        .settings-panel.active .setting-group:nth-child(2) { animation-delay: 0.2s; }
+        .settings-panel.active .setting-group:nth-child(3) { animation-delay: 0.3s; }
+        .settings-panel.active .setting-group:nth-child(4) { animation-delay: 0.4s; }
+        .settings-panel.active .setting-group:nth-child(5) { animation-delay: 0.5s; }
+        .settings-panel.active .setting-group:nth-child(6) { animation-delay: 0.6s; }
+        .settings-panel.active .setting-group:nth-child(7) { animation-delay: 0.7s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .setting-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.025em;
+        }
+
+        .setting-group .setting-description {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .setting-control {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-tertiary);
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .setting-control:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.1);
+        }
+
+        .setting-control input[type="range"] {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--bg-primary);
+            outline: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .setting-control input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(88, 166, 255, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .setting-control input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 8px rgba(88, 166, 255, 0.6);
+        }
+
+        .setting-control input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(88, 166, 255, 0.4);
+        }
+
+        .setting-control input[type="color"] {
+            width: 50px;
+            height: 35px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            background: none;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .setting-control input[type="color"]:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-color);
+        }
+
+        .setting-control input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .setting-control input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 4px;
+        }
+
+        .setting-control input[type="number"] {
+            width: 80px;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .setting-control input[type="text"] {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 12px;
+        }
+
+        .setting-control select {
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .setting-control span {
+            min-width: 60px;
+            font-size: 11px;
+            color: var(--accent-color);
+            text-align: right;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            background: var(--bg-primary);
+            padding: 3px 6px;
+            border-radius: 3px;
+            border: 1px solid var(--border-color);
+        }
+
+        .settings-actions {
+            margin-top: 20px;
+            padding: 16px 20px;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-tertiary);
+            display: flex;
+            gap: 10px;
+        }
+
+        .settings-actions .jk {
+            flex: 1;
+            justify-content: center;
+            padding: 10px 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        .setting-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .setting-col {
+            flex: 1;
+        }
+
+        .setting-group-header {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .setting-group-header i {
+            font-size: 14px;
+            color: var(--accent-color);
+        }
+
+        /* Dynamic Table Styles */
+        .arc table {
+            transition: all 0.3s ease;
+        }
+
+        /* Mobile responsive for tabs */
+        @media (max-width: 768px) {
+            .editor-tab {
+                padding: 10px 8px;
+                font-size: 13px;
+            }
+            
+            .editor-tab span {
+                display: none;
+            }
+
+            .settings-tab {
+                min-width: 100px;
+                font-size: 11px;
+                padding: 8px 12px;
+            }
+
+            .settings-tab span {
+                display: none;
+            }
+            
+            .setting-control {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            
+            .setting-control span {
+                text-align: center;
+                min-width: auto;
+            }
+            
+            .settings-tab-content {
+                padding: 16px;
+            }
+            
+            .settings-actions {
+                flex-direction: column;
+                gap: 8px;
+                padding: 12px 16px;
+            }
+
+            .setting-row {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            /* History Panel Mobile Styles */
+            .history-header {
+                padding: 16px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            
+            .history-title {
+                font-size: 16px;
+                justify-content: center;
+            }
+            
+            .history-actions {
+                justify-content: center;
+            }
+            
+            .history-list {
+                padding: 16px;
+            }
+            
+            .history-item {
+                padding: 12px;
+            }
+            
+            .history-item-header {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .history-item-actions {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .setting-group {
+                margin-bottom: 16px;
+            }
+            
+            .editor-tab {
+                padding: 8px 4px;
+            }
+            
+            .settings-actions .jk {
+                padding: 10px 12px;
+                font-size: 11px;
+            }
+
+            .settings-tab {
+                min-width: 80px;
+                padding: 6px 8px;
+            }
+            
+            /* History Panel Small Mobile Styles */
+            .history-header {
+                padding: 12px;
+            }
+            
+            .history-title {
+                font-size: 14px;
+            }
+            
+            .history-title i {
+                font-size: 16px;
+            }
+            
+            .history-list {
+                padding: 12px;
+            }
+            
+            .history-item {
+                padding: 8px;
+                margin-bottom: 8px;
+            }
+            
+            .history-item-title {
+                font-size: 12px;
+            }
+            
+            .history-item-date {
+                font-size: 10px;
+            }
+            
+            .history-item-preview {
+                font-size: 10px;
+                padding: 8px;
+                max-height: 80px;
+            }
+            
+            .history-btn {
+                min-width: 24px;
+                height: 24px;
+                font-size: 10px;
+            }
+        }
+
+        /* History Panel */
+        .history-panel {
+            background: var(--bg-secondary);
+        }
+
+        .history-content {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .history-header {
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .history-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-primary);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .history-title i {
+            color: var(--accent-color);
+            font-size: 20px;
+        }
+
+        .history-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .history-list {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .history-empty {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 60px 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .history-empty i {
+            font-size: 48px;
+            color: var(--border-color);
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .history-empty p {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+
+        .history-empty-sub {
+            font-size: 14px !important;
+            opacity: 0.7;
+        }
+
+        .history-item {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .history-item:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 2px 8px rgba(88, 166, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .history-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            gap: 12px;
+        }
+
+        .history-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .history-item-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            font-size: 14px;
+            word-break: break-word;
+        }
+
+        .history-item-date {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .history-item-actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .history-item-preview {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 4px;
+            padding: 12px;
+            font-family: 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: var(--text-secondary);
+            max-height: 120px;
+            overflow: hidden;
+            position: relative;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .history-item-preview::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: linear-gradient(transparent, var(--code-bg));
+            pointer-events: none;
+        }
+
+        .history-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 6px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 28px;
+            height: 28px;
+        }
+
+        .history-btn:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: white;
+        }
+
+        .history-btn.delete:hover {
+            background: #dc3545;
+            border-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="zx">
+        <div class="qz">
+            <h1>Markdown to PDF</h1>
+            <div class="vx">
+                <button class="jk jk-secondary" id="themeToggle" onclick="toggleTheme()">
+                    <i class="fa-solid fa-sun fa-spin" id="themeIcon"></i>
+                    <span id="themeText">Light</span>
+                </button>
+                <button class="jk jk-secondary" onclick="clearEditor()">
+                    Clear
+                </button>
+                <button class="jk jk-secondary" onclick="loadSample()">
+                    Sample
+                </button>
+                <button class="jk jk-primary" onclick="downloadPDF()">
+                    Download PDF
+                </button>
+            </div>
+        </div>
+        
+        <div class="wx">
+            <div class="mdx">
+                <div class="zen">
+                    <div class="editor-tabs">
+                        <button class="editor-tab active" data-tab="editor" onclick="switchEditorTab('editor')">
+                            <i class="fa-solid fa-pen"></i>
+                    Markdown Editor
+                        </button>
+                        <button class="editor-tab" data-tab="history" onclick="switchEditorTab('history')">
+                            <i class="fa-solid fa-history"></i>
+                            History
+                        </button>
+                        <button class="editor-tab" data-tab="settings" onclick="switchEditorTab('settings')">
+                            <i class="fa-solid fa-cog"></i>
+                             Settings
+                        </button>
+                </div>
+                </div>
+                
+                <div class="editor-content">
+                    <div class="editor-panel active" id="editorPanel">
+                <textarea class="neo" id="markdownEditor" placeholder="Type your markdown here...
+
+# Welcome to Markdown Editor
+
+Start typing your **markdown** content here and see the live preview on the right!
+
+## Features
+- Live preview
+- PDF export
+- Modern UI
+- Responsive design
+
+```javascript
+console.log('Hello World!');
+```
+
+&gt; This is a blockquote example.
+
+- List item 1
+- List item 2
+- List item 3"></textarea>
+                    </div>
+                    
+                    <div class="editor-panel history-panel" id="historyPanel">
+                        <div class="history-content">
+                            <div class="history-header">
+                                <div class="history-title">
+                                    <i class="fa-solid fa-history"></i>
+                                    <span>Document History</span>
+                                </div>
+                                <div class="history-actions">
+                                    <button class="jk jk-secondary" onclick="saveCurrentDocument()" title="Save Current Document">
+                                        <i class="fa-solid fa-save"></i>
+                                        Save Current
+                                    </button>
+                                    <button class="jk jk-secondary" onclick="clearHistory()" title="Clear All History">
+                                        <i class="fa-solid fa-trash"></i>
+                                        Clear All
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="history-list" id="historyList">
+                                <div class="history-empty" id="historyEmpty">
+                                    <i class="fa-solid fa-clock"></i>
+                                    <p>No saved documents yet</p>
+                                    <p class="history-empty-sub">Click "Save Current" to save your markdown documents</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="editor-panel settings-panel" id="settingsPanel">
+                        <div class="settings-content">
+                            <div class="settings-tabs">
+                                <button class="settings-tab active" data-settings-tab="table" onclick="switchSettingsTab('table')">
+                                    <i class="fa-solid fa-table"></i>
+                                    <span>Tables</span>
+                                </button>
+                                <button class="settings-tab" data-settings-tab="typography" onclick="switchSettingsTab('typography')">
+                                    <i class="fa-solid fa-font"></i>
+                                    <span>Typography</span>
+                                </button>
+                                <button class="settings-tab" data-settings-tab="code" onclick="switchSettingsTab('code')">
+                                    <i class="fa-solid fa-code"></i>
+                                    <span>Code Blocks</span>
+                                </button>
+                                <button class="settings-tab" data-settings-tab="colors" onclick="switchSettingsTab('colors')">
+                                    <i class="fa-solid fa-palette"></i>
+                                    <span>Colors</span>
+                                </button>
+                                <button class="settings-tab" data-settings-tab="spacing" onclick="switchSettingsTab('spacing')">
+                                    <i class="fa-solid fa-expand-arrows-alt"></i>
+                                    <span>Spacing</span>
+                                </button>
+                            </div>
+
+                            <!-- Table Settings Tab -->
+                            <div class="settings-tab-content active" id="tableTab">
+                                <div class="setting-group-header">
+                                    <i class="fa-solid fa-table"></i>
+                                    Table Appearance
+                                </div>
+
+                                <div class="setting-row">
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="tablePadding">Cell Padding</label>
+                                            <div class="setting-description">Space inside table cells</div>
+                                            <div class="setting-control">
+                                                <input id="tablePadding" max="20" min="4" onchange="updateTableSettings()" oninput="updateTableSettings()" type="range" value="8" />
+                                                <span id="tablePaddingValue">8px</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="tableMargin">Table Margin</label>
+                                            <div class="setting-description">Space around entire table</div>
+                                            <div class="setting-control">
+                                                <input id="tableMargin" max="32" min="8" onchange="updateTableSettings()" oninput="updateTableSettings()" type="range" value="16" />
+                                                <span id="tableMarginValue">16px</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="setting-row">
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="borderColor">Border Color</label>
+                                            <div class="setting-description">Color of table borders</div>
+                                            <div class="setting-control">
+                                                <input id="borderColor" onchange="updateTableSettings()" oninput="updateTableSettings()" type="color" value="#333333" />
+                                                <span id="borderColorValue">#333333</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="headerBg">Header Background</label>
+                                            <div class="setting-description">Background color for table headers</div>
+                                            <div class="setting-control">
+                                                <input id="headerBg" onchange="updateTableSettings()" oninput="updateTableSettings()" type="color" value="#f5f5f5" />
+                                                <span id="headerBgValue">#f5f5f5</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Typography Settings Tab -->
+                            <div class="settings-tab-content" id="typographyTab">
+                                <div class="setting-group-header">
+                                    <i class="fa-solid fa-font"></i>
+                                    Typography Settings
+                                </div>
+
+                                <!-- Hidden base font size input to maintain script compatibility -->
+                                <input type="hidden" id="baseFontSize" value="12" />
+
+                                <div class="setting-row">
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="lineHeight">Line Height</label>
+                                            <div class="setting-description">Spacing between lines of text</div>
+                                            <div class="setting-control">
+                                                <input id="lineHeight" max="2.0" min="1.2" onchange="updateTypographySettings()" oninput="updateTypographySettings()" step="0.1" type="range" value="1.2" />
+                                                <span id="lineHeightValue">1.2</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="fontFamily">Font Family</label>
+                                            <div class="setting-description">Choose the primary font</div>
+                                            <div class="setting-control">
+                                                <select id="fontFamily" onchange="updateTypographySettings()">
+                                                    <option value="system">System Default</option>
+                                                    <option value="serif">Serif (Times)</option>
+                                                    <option value="monospace">Monospace</option>
+                                                    <option value="arial">Arial</option>
+                                                    <option value="helvetica">Helvetica</option>
+                                                    <option value="georgia">Georgia</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Heading & Title sizes side-by-side -->
+                                <div class="setting-row">
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="headingScale">Heading Size</label>
+                                            <div class="setting-description">Size multiplier for headings (H2-H6)</div>
+                                            <div class="setting-control">
+                                                <input id="headingScale" max="2.0" min="1.1" onchange="updateTypographySettings()" oninput="updateTypographySettings()" step="0.1" type="range" value="1.1" />
+                                                <span id="headingScaleValue">1.1x</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="titleFontSize">Title Font Size</label>
+                                            <div class="setting-description">Size of main heading (H1)</div>
+                                            <div class="setting-control">
+                                                <input id="titleFontSize" min="16" max="60" onchange="updateTypographySettings()" oninput="updateTypographySettings()" type="range" value="24" />
+                                                <span id="titleFontSizeValue">24px</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Code Blocks Settings Tab -->
+                            <div class="settings-tab-content" id="codeTab">
+                                <div class="setting-group-header">
+                                    <i class="fa-solid fa-code"></i>
+                                    Code Block Styling
+                                </div>
+
+                                <div class="setting-row">
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="codeFontSize">Code Font Size</label>
+                                            <div class="setting-description">Font size for code blocks</div>
+                                            <div class="setting-control">
+                                                <input id="codeFontSize" max="18" min="10" onchange="updateCodeSettings()" oninput="updateCodeSettings()" type="range" value="14" />
+                                                <span id="codeFontSizeValue">14px</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="codePadding">Code Padding</label>
+                                            <div class="setting-description">Inner padding for code blocks</div>
+                                            <div class="setting-control">
+                                                <input id="codePadding" max="24" min="8" onchange="updateCodeSettings()" oninput="updateCodeSettings()" type="range" value="16" />
+                                                <span id="codePaddingValue">16px</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="setting-row">
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="codeBackground">Code Background</label>
+                                            <div class="setting-description">Background color for code blocks</div>
+                                            <div class="setting-control">
+                                                <input id="codeBackground" onchange="updateCodeSettings()" oninput="updateCodeSettings()" type="color" value="#f8f8f8" />
+                                                <span id="codeBackgroundValue">#f8f8f8</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="codeRadius">Border Radius</label>
+                                            <div class="setting-description">Rounded corners for code blocks</div>
+                                            <div class="setting-control">
+                                                <input id="codeRadius" max="12" min="0" onchange="updateCodeSettings()" oninput="updateCodeSettings()" type="range" value="6" />
+                                                <span id="codeRadiusValue">6px</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Colors Settings Tab -->
+                            <div class="settings-tab-content" id="colorsTab">
+                                <div class="setting-group-header">
+                                    <i class="fa-solid fa-palette"></i>
+                                    Color Scheme
+                                </div>
+
+                                <div class="setting-row">
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="textColor">Text Color</label>
+                                            <div class="setting-description">Primary text color</div>
+                                            <div class="setting-control">
+                                                <input id="textColor" onchange="updateColorSettings()" oninput="updateColorSettings()" type="color" value="#333333" />
+                                                <span id="textColorValue">#333333</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="linkColor">Link Color</label>
+                                            <div class="setting-description">Color for hyperlinks</div>
+                                            <div class="setting-control">
+                                                <input id="linkColor" onchange="updateColorSettings()" oninput="updateColorSettings()" type="color" value="#0066cc" />
+                                                <span id="linkColorValue">#0066cc</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="setting-row">
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="headingColor">Heading Color</label>
+                                            <div class="setting-description">Color for headings (H1-H6)</div>
+                                            <div class="setting-control">
+                                                <input id="headingColor" onchange="updateColorSettings()" oninput="updateColorSettings()" type="color" value="#2c3e50" />
+                                                <span id="headingColorValue">#2c3e50</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="blockquoteColor">Blockquote Border</label>
+                                            <div class="setting-description">Border color for blockquotes</div>
+                                            <div class="setting-control">
+                                                <input id="blockquoteColor" onchange="updateColorSettings()" oninput="updateColorSettings()" type="color" value="#ddd" />
+                                                <span id="blockquoteColorValue">#dddddd</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Spacing Settings Tab -->
+                            <div class="settings-tab-content" id="spacingTab">
+                                <div class="setting-group-header">
+                                    <i class="fa-solid fa-expand-arrows-alt"></i>
+                                    Layout &amp; Spacing
+                                </div>
+
+                                <div class="setting-row">
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="paragraphSpacing">Paragraph Spacing</label>
+                                            <div class="setting-description">Space between paragraphs</div>
+                                            <div class="setting-control">
+                                                <input id="paragraphSpacing" max="32" min="8" onchange="updateSpacingSettings()" oninput="updateSpacingSettings()" type="range" value="8" />
+                                                <span id="paragraphSpacingValue">8px</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="headingSpacing">Heading Spacing</label>
+                                            <div class="setting-description">Space above headings</div>
+                                            <div class="setting-control">
+                                                <input id="headingSpacing" max="48" min="16" onchange="updateSpacingSettings()" oninput="updateSpacingSettings()" type="range" value="16" />
+                                                <span id="headingSpacingValue">16px</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="setting-row">
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="listSpacing">List Spacing</label>
+                                            <div class="setting-description">Space between list items</div>
+                                            <div class="setting-control">
+                                                <input id="listSpacing" max="16" min="4" onchange="updateSpacingSettings()" oninput="updateSpacingSettings()" type="range" value="4" />
+                                                <span id="listSpacingValue">4px</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="setting-col">
+                                        <div class="setting-group">
+                                            <label for="blockquoteSpacing">Blockquote Spacing</label>
+                                            <div class="setting-description">Space around blockquotes</div>
+                                            <div class="setting-control">
+                                                <input id="blockquoteSpacing" max="32" min="12" onchange="updateSpacingSettings()" oninput="updateSpacingSettings()" type="range" value="12" />
+                                                <span id="blockquoteSpacingValue">12px</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-actions">
+                                <button class="jk jk-secondary" onclick="resetAllSettings()">
+                                    <i class="fa-solid fa-refresh"></i>
+                                    Reset All
+                                </button>
+                                <button class="jk jk-secondary" onclick="exportSettings()">
+                                    <i class="fa-solid fa-download"></i>
+                                    Export
+                                </button>
+                                <button class="jk jk-primary" onclick="switchEditorTab('editor')">
+                                    <i class="fa-solid fa-pen"></i>
+                                    Back to Editor
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ace">
+                <div class="zen" style="align-items: center; display: flex; justify-content: space-between;">
+                    <span>Live Preview</span>
+                    <button onclick="copyRichText()" onmouseout="this.style.background='none'; this.style.color='var(--text-secondary)'" onmouseover="this.style.background='var(--bg-tertiary)'; this.style.color='var(--accent-color)'" style="background: none; border-radius: 4px; border: none; color: var(--text-secondary); cursor: pointer; padding: 8px; transition: all 0.2s ease;">
+                        <i class="fa-solid fa-copy" style="font-size: 14px;"></i>
+                    </button>
+                </div>
+                <div class="arc" id="previewContent"></div>
+            </div>
+        </div>
+        
+        <div class="x-bar">
+            <span id="wordCount">Words: 0 | Characters: 0</span>
+            <span>Ready</span>
+        </div>
+    </div>
+
+    <div class="q-load" id="loading">
+        <div class="q-spin"></div>
+        <div style="text-align: center;">Generating PDF...</div>
+    </div>
+
+    <div class="copy-notification" id="copyNotification">
+        Content copied to clipboard!
+    </div>
+
+    <script>
+        // Theme functionality - Initialize first
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            updateThemeButton(newTheme);
+        }
+
+        function updateThemeButton(theme) {
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+            
+            if (theme === 'light') {
+                themeIcon.className = 'fa-solid fa-moon';
+                themeText.textContent = 'Dark';
+            } else {
+                themeIcon.className = 'fa-solid fa-sun fa-spin';
+                themeText.textContent = 'Light';
+            }
+        }
+
+        function initializeTheme() {
+            // Check for saved theme preference or default to dark
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+            
+            updateThemeButton(savedTheme);
+        }
+
+        // Initialize theme immediately
+        initializeTheme();
+
+        const editor = document.getElementById('markdownEditor');
+        const preview = document.getElementById('previewContent');
+        const wordCount = document.getElementById('wordCount');
+        const loading = document.getElementById('loading');
+
+        // Configure marked options
+        marked.setOptions({
+            breaks: true,
+            gfm: true,
+            headerIds: false,
+            mangle: false
+        });
+
+        // Initialize with placeholder content
+        updatePreview();
+
+        // Update preview on input
+        editor.addEventListener('input', debounce(updatePreview, 300));
+
+        function updatePreview() {
+            const markdownText = editor.value;
+            const htmlContent = marked.parse(markdownText);
+            preview.innerHTML = htmlContent;
+            updateWordCount(markdownText);
+        }
+
+        function updateWordCount(text) {
+            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+            const characters = text.length;
+            wordCount.textContent = `Words: ${words} | Characters: ${characters}`;
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        function clearEditor() {
+            if (confirm('Are you sure you want to clear the editor?')) {
+                editor.value = '';
+                updatePreview();
+            }
+        }
+
+        function loadSample() {
+            const sampleMarkdown = `# Sample Document
+
+## Introduction
+
+This is a **sample markdown document** to demonstrate the *markdown to PDF* converter.
+
+### Features
+
+Our converter supports:
+
+- **Bold** and *italic* text
+- Headers (H1 through H6)
+- Lists (ordered and unordered)
+- Code blocks and \`inline code\`
+- Tables
+- Blockquotes
+- Links and images
+
+### Code Example
+
+\`\`\`javascript
+function greet(name) {
+    console.log(\`Hello, \${name}!\`);
+}
+
+greet('World');
+\`\`\`
+
+### Table Example
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Live Preview | ✅ | Real-time updates |
+| PDF Export | ✅ | High quality output |
+| Syntax Highlighting | ✅ | Code blocks supported |
+| Mobile Responsive | ✅ | Works on all devices |
+
+### Blockquote
+
+> "The best way to predict the future is to create it." - Peter Drucker
+
+### Lists
+
+#### Ordered List
+1. First item
+2. Second item
+3. Third item
+
+#### Unordered List
+- Apple
+- Banana
+- Cherry
+
+---
+
+**Thank you for using our Markdown to PDF converter!**
+`;
+            editor.value = sampleMarkdown;
+            updatePreview();
+        }
+
+        // Copy functionality - simplified to just rich text copy
+        function showCopyNotification(message = 'Content copied to clipboard!') {
+            const notification = document.getElementById('copyNotification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        async function copyToClipboard(text, successMessage) {
+            try {
+                await navigator.clipboard.writeText(text);
+                showCopyNotification(successMessage);
+            } catch (err) {
+                // Fallback for older browsers or permission issues
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-9999px';
+                textArea.style.opacity = '0';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                    showCopyNotification(successMessage);
+                    } else {
+                        throw new Error('execCommand failed');
+                    }
+                } catch (fallbackErr) {
+                    // Create a visible text area for manual selection
+                    textArea.style.position = 'fixed';
+                    textArea.style.top = '50%';
+                    textArea.style.left = '50%';
+                    textArea.style.transform = 'translate(-50%, -50%)';
+                    textArea.style.width = '300px';
+                    textArea.style.height = '200px';
+                    textArea.style.opacity = '1';
+                    textArea.style.zIndex = '10000';
+                    textArea.style.border = '2px solid #007bff';
+                    textArea.style.padding = '10px';
+                    textArea.style.fontSize = '14px';
+                    textArea.select();
+                    
+                    alert('Copy failed automatically. The content is now selected. Please press Ctrl+C (or Cmd+C) to copy manually, then click anywhere to close this text area.');
+                    
+                    // Remove on click anywhere
+                    const removeTextArea = () => {
+                        if (document.body.contains(textArea)) {
+                            document.body.removeChild(textArea);
+                        }
+                        document.removeEventListener('click', removeTextArea);
+                    };
+                    
+                    setTimeout(() => {
+                        document.addEventListener('click', removeTextArea);
+                    }, 100);
+                    
+                    return;
+                }
+                
+                document.body.removeChild(textArea);
+            }
+        }
+
+        async function copyRichText() {
+            // Get the current preview content
+            const plainText = preview.textContent || preview.innerText;
+            
+            // Get font family mapping for Google Docs compatibility
+            const fontFamilyMap = {
+                'system': 'Arial',
+                'serif': 'Times New Roman',
+                'monospace': 'Courier New',
+                'arial': 'Arial',
+                'helvetica': 'Arial',
+                'georgia': 'Georgia'
+            };
+
+            const selectedFont = fontFamilyMap[allSettings.typography.fontFamily] || 'Arial';
+            
+            // Clone the preview content and apply inline styles to each element
+            const clonedContent = preview.cloneNode(true);
+            
+            // Function to apply inline styles to all elements
+            function applyInlineStyles(element) {
+                const tagName = element.tagName ? element.tagName.toLowerCase() : '';
+                
+                switch (tagName) {
+                    case 'h1':
+                        element.style.cssText = `
+                            font-family: ${selectedFont};
+                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 2}px;
+                            color: ${allSettings.colors.heading};
+                            margin: ${allSettings.spacing.heading}px 0 ${allSettings.spacing.heading * 0.5}px 0;
+                            font-weight: bold;
+                            line-height: 1.2;
+                        `;
+                        break;
+                    case 'h2':
+                        element.style.cssText = `
+                            font-family: ${selectedFont};
+                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 1.5}px;
+                            color: ${allSettings.colors.heading};
+                            margin: ${allSettings.spacing.heading}px 0 ${allSettings.spacing.heading * 0.5}px 0;
+                            font-weight: bold;
+                            line-height: 1.2;
+                        `;
+                        break;
+                    case 'h3':
+                        element.style.cssText = `
+                            font-family: ${selectedFont};
+                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 1.25}px;
+                            color: ${allSettings.colors.heading};
+                            margin: ${allSettings.spacing.heading}px 0 ${allSettings.spacing.heading * 0.5}px 0;
+                            font-weight: bold;
+                            line-height: 1.2;
+                        `;
+                        break;
+                    case 'h4':
+                        element.style.cssText = `
+                            font-family: ${selectedFont};
+                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale}px;
+                            color: ${allSettings.colors.heading};
+                            margin: ${allSettings.spacing.heading}px 0 ${allSettings.spacing.heading * 0.5}px 0;
+                            font-weight: bold;
+                            line-height: 1.2;
+                        `;
+                        break;
+                    case 'h5':
+                        element.style.cssText = `
+                            font-family: ${selectedFont};
+                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 0.875}px;
+                            color: ${allSettings.colors.heading};
+                            margin: ${allSettings.spacing.heading}px 0 ${allSettings.spacing.heading * 0.5}px 0;
+                            font-weight: bold;
+                            line-height: 1.2;
+                        `;
+                        break;
+                    case 'h6':
+                        element.style.cssText = `
+                            font-family: ${selectedFont};
+                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 0.75}px;
+                            color: ${allSettings.colors.heading};
+                            margin: ${allSettings.spacing.heading}px 0 ${allSettings.spacing.heading * 0.5}px 0;
+                            font-weight: bold;
+                            line-height: 1.2;
+                        `;
+                        break;
+                    case 'p':
+                        element.style.cssText = `
+                            font-family: ${selectedFont};
+                            font-size: ${allSettings.typography.baseFontSize}px;
+                            line-height: ${allSettings.typography.lineHeight};
+                            color: ${allSettings.colors.text};
+                            margin: 0 0 ${allSettings.spacing.paragraph}px 0;
+                        `;
+                        break;
+                    case 'ul':
+                    case 'ol':
+                        element.style.cssText = `
+                            font-family: ${selectedFont};
+                            font-size: ${allSettings.typography.baseFontSize}px;
+                            color: ${allSettings.colors.text};
+                            margin: ${allSettings.spacing.list}px 0;
+                            padding-left: 25px;
+                        `;
+                        break;
+                    case 'li':
+                        element.style.cssText = `
+                            font-family: ${selectedFont};
+                            font-size: ${allSettings.typography.baseFontSize}px;
+                            color: ${allSettings.colors.text};
+                            margin: 0 0 ${allSettings.spacing.list * 0.5}px 0;
+                        `;
+                        break;
+                    case 'blockquote':
+                        element.style.cssText = `
+                            font-family: ${selectedFont};
+                            font-size: ${allSettings.typography.baseFontSize}px;
+                            color: ${allSettings.colors.blockquote};
+                            border-left: 4px solid ${allSettings.colors.blockquote};
+                            margin: ${allSettings.spacing.blockquote}px 0;
+                            padding: 0 0 0 16px;
+                            font-style: italic;
+                        `;
+                        break;
+                    case 'a':
+                        element.style.cssText = `
+                            font-family: ${selectedFont};
+                            color: ${allSettings.colors.link};
+                            text-decoration: underline;
+                        `;
+                        break;
+                    case 'table':
+                        element.style.cssText = `
+                            font-family: ${selectedFont};
+                            font-size: ${allSettings.table.fontSize}px;
+                            border-collapse: collapse;
+                            width: 100%;
+                            margin: ${allSettings.table.margin}px 0;
+                            border: ${allSettings.table.borderWidth}px solid ${allSettings.table.borderColor};
+                        `;
+                        break;
+                    case 'th':
+                        element.style.cssText = `
+                            font-family: ${selectedFont};
+                            font-size: ${allSettings.table.fontSize}px;
+                            border: ${allSettings.table.borderWidth}px solid ${allSettings.table.borderColor};
+                            padding: ${allSettings.table.padding}px ${allSettings.table.padding + 4}px;
+                            text-align: left;
+                            background-color: ${allSettings.table.headerBackground};
+                            font-weight: bold;
+                            color: ${allSettings.colors.text};
+                        `;
+                        break;
+                    case 'td':
+                        element.style.cssText = `
+                            font-family: ${selectedFont};
+                            font-size: ${allSettings.table.fontSize}px;
+                            border: ${allSettings.table.borderWidth}px solid ${allSettings.table.borderColor};
+                            padding: ${allSettings.table.padding}px ${allSettings.table.padding + 4}px;
+                            text-align: left;
+                            color: ${allSettings.colors.text};
+                        `;
+                        break;
+                    case 'code':
+                        const isInPre = element.parentElement && element.parentElement.tagName.toLowerCase() === 'pre';
+                        if (!isInPre) {
+                            element.style.cssText = `
+                                font-family: ${allSettings.code.fontFamily === 'inherit' ? selectedFont : 'Courier New'};
+                                font-size: ${allSettings.code.fontSize}px;
+                                background-color: ${allSettings.code.background};
+                                padding: 3px 6px;
+                                border-radius: ${allSettings.code.borderRadius * 0.5}px;
+                                border: 1px solid ${allSettings.colors.blockquote};
+                            `;
+                        }
+                        break;
+                    case 'pre':
+                        element.style.cssText = `
+                            font-family: ${allSettings.code.fontFamily === 'inherit' ? selectedFont : 'Courier New'};
+                            font-size: ${allSettings.code.fontSize}px;
+                            background-color: ${allSettings.code.background};
+                            padding: ${allSettings.code.padding}px;
+                            border-radius: ${allSettings.code.borderRadius}px;
+                            border: 1px solid ${allSettings.colors.blockquote};
+                            overflow-x: auto;
+                            margin: ${allSettings.spacing.paragraph}px 0;
+                        `;
+                        break;
+                    case 'strong':
+                    case 'b':
+                        element.style.cssText = `
+                            font-family: ${selectedFont};
+                            font-weight: bold;
+                        `;
+                        break;
+                    case 'em':
+                    case 'i':
+                        element.style.cssText = `
+                            font-family: ${selectedFont};
+                            font-style: italic;
+                        `;
+                        break;
+                    case 'hr':
+                        element.style.cssText = `
+                            border: none;
+                            border-top: 2px solid ${allSettings.colors.blockquote};
+                            margin: ${allSettings.spacing.heading}px 0;
+                        `;
+                        break;
+                    default:
+                        // Apply base font to any other elements
+                        if (element.style) {
+                            element.style.fontFamily = selectedFont;
+                            element.style.fontSize = `${allSettings.typography.baseFontSize}px`;
+                            element.style.color = allSettings.colors.text;
+                        }
+                        break;
+                }
+                
+                // Recursively apply to all child elements
+                for (let child of element.children) {
+                    applyInlineStyles(child);
+                }
+            }
+            
+            // Apply inline styles to all elements
+            applyInlineStyles(clonedContent);
+            
+            // Create the final HTML with the styled content
+            const styledHTML = `
+                <div style="font-family: ${selectedFont}; font-size: ${allSettings.typography.baseFontSize}px; line-height: ${allSettings.typography.lineHeight}; color: ${allSettings.colors.text}; background: white; padding: 20px; max-width: 100%;">
+                    ${clonedContent.innerHTML}
+                </div>
+            `;
+            
+            // Try modern clipboard API first (for rich text support)
+            if (navigator.clipboard && window.ClipboardItem) {
+                try {
+                    const clipboardItem = new ClipboardItem({
+                        'text/html': new Blob([styledHTML], { type: 'text/html' }),
+                        'text/plain': new Blob([plainText], { type: 'text/plain' })
+                    });
+                    await navigator.clipboard.write([clipboardItem]);
+                    showCopyNotification(`✅ Rich content copied with ${selectedFont} font! Paste into Google Docs.`);
+                    return;
+                } catch (err) {
+                    console.log('ClipboardItem failed, trying HTML fallback:', err);
+                }
+            }
+
+            // Fallback to HTML-only copy
+            if (navigator.clipboard) {
+                try {
+                    await navigator.clipboard.writeText(styledHTML);
+                    showCopyNotification(`📋 HTML copied with ${selectedFont} font! Paste into an HTML editor.`);
+                    return;
+                } catch (err) {
+                    console.log('HTML copy failed, trying plain text:', err);
+                }
+            }
+
+            // Final fallback to plain text
+            try {
+                await copyToClipboard(plainText, '📄 Plain text copied!');
+            } catch (err) {
+                console.log('All copy methods failed:', err);
+                
+                // Create a manual copy dialog
+                const copyDialog = document.createElement('div');
+                copyDialog.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: white;
+                    border: 2px solid #007bff;
+                    border-radius: 8px;
+                    padding: 20px;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+                    z-index: 10000;
+                    max-width: 90vw;
+                    max-height: 80vh;
+                `;
+                
+                copyDialog.innerHTML = `
+                    <h3 style="margin: 0 0 15px 0; color: #333;">Manual Copy Required</h3>
+                    <p style="margin: 0 0 15px 0; color: #666;">Copy failed automatically. Please select all text below and press Ctrl+C (or Cmd+C):</p>
+                    <textarea readonly style="width: 100%; height: 200px; font-family: monospace; font-size: 12px; border: 1px solid #ddd; border-radius: 4px; padding: 10px; resize: vertical;">${styledHTML}</textarea>
+                    <div style="margin-top: 15px; text-align: right;">
+                        <button onclick="this.parentElement.parentElement.remove()" style="background: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Close</button>
+                    </div>
+                `;
+                
+                document.body.appendChild(copyDialog);
+                
+                // Auto-select the content
+                const textarea = copyDialog.querySelector('textarea');
+                textarea.select();
+                textarea.focus();
+            }
+        }
+
+        function htmlToFormattedText(element) {
+            let result = '';
+            
+            function processNode(node, indent = '') {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    const text = node.textContent.trim();
+                    if (text) {
+                        result += text + ' ';
+                    }
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    const tagName = node.tagName.toLowerCase();
+                    
+                    switch (tagName) {
+                        case 'h1':
+                        case 'h2':
+                        case 'h3':
+                        case 'h4':
+                        case 'h5':
+                        case 'h6':
+                            result += '\n\n' + '#'.repeat(parseInt(tagName[1])) + ' ';
+                            processChildren(node);
+                            result += '\n';
+                            break;
+                        case 'p':
+                            result += '\n\n';
+                            processChildren(node);
+                            break;
+                        case 'br':
+                            result += '\n';
+                            break;
+                        case 'strong':
+                        case 'b':
+                            result += '**';
+                            processChildren(node);
+                            result += '**';
+                            break;
+                        case 'em':
+                        case 'i':
+                            result += '*';
+                            processChildren(node);
+                            result += '*';
+                            break;
+                        case 'code':
+                            if (node.parentElement && node.parentElement.tagName.toLowerCase() === 'pre') {
+                                // Already handled by pre
+                                processChildren(node);
+                            } else {
+                                result += '`';
+                                processChildren(node);
+                                result += '`';
+                            }
+                            break;
+                        case 'pre':
+                            result += '\n\n```\n';
+                            processChildren(node);
+                            result += '\n```\n';
+                            break;
+                        case 'blockquote':
+                            result += '\n\n> ';
+                            processChildren(node);
+                            break;
+                        case 'ul':
+                            result += '\n';
+                            processChildren(node, indent);
+                            break;
+                        case 'ol':
+                            result += '\n';
+                            let counter = 1;
+                            for (let child of node.children) {
+                                if (child.tagName.toLowerCase() === 'li') {
+                                    result += '\n' + indent + counter + '. ';
+                                    processChildren(child, indent + '   ');
+                                    counter++;
+                                }
+                            }
+                            break;
+                        case 'li':
+                            if (node.parentElement.tagName.toLowerCase() === 'ul') {
+                                result += '\n' + indent + '• ';
+                                processChildren(node, indent + '  ');
+                            }
+                            // ol li items are handled in the ol case
+                            break;
+                        case 'table':
+                            result += '\n\n';
+                            processChildren(node);
+                            result += '\n';
+                            break;
+                        case 'tr':
+                            result += '| ';
+                            processChildren(node);
+                            break;
+                        case 'th':
+                        case 'td':
+                            processChildren(node);
+                            result += ' | ';
+                            break;
+                        case 'a':
+                            const href = node.getAttribute('href');
+                            if (href) {
+                                result += '[';
+                                processChildren(node);
+                                result += '](' + href + ')';
+                            } else {
+                                processChildren(node);
+                            }
+                            break;
+                        case 'hr':
+                            result += '\n\n---\n\n';
+                            break;
+                        default:
+                            processChildren(node, indent);
+                            break;
+                    }
+                }
+            }
+            
+            function processChildren(node, indent = '') {
+                for (let child of node.childNodes) {
+                    processNode(child, indent);
+                }
+            }
+            
+            processNode(element);
+            
+            // Clean up extra whitespace and newlines
+            return result
+                .replace(/\n{3,}/g, '\n\n')
+                .replace(/^\s+|\s+$/g, '')
+                .replace(/ {2,}/g, ' ');
+        }
+
+        function copyMarkdown() {
+            const markdownText = editor.value;
+            copyToClipboard(markdownText, 'Markdown copied!');
+        }
+
+        function copyHTML() {
+            const htmlContent = preview.innerHTML;
+            copyToClipboard(htmlContent, 'HTML copied!');
+        }
+
+        function copyFormattedText() {
+            const formattedText = htmlToFormattedText(preview);
+            copyToClipboard(formattedText, 'Formatted text copied!');
+        }
+
+        function copyPlainText() {
+            const plainText = preview.textContent || preview.innerText;
+            copyToClipboard(plainText, 'Plain text copied!');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const copyDropdown = document.querySelector('.copy-dropdown');
+            if (!copyDropdown.contains(event.target)) {
+                const copyMenu = document.getElementById('copyMenu');
+                const copyBtn = document.querySelector('.copy-btn');
+                copyMenu.classList.remove('show');
+                copyBtn.classList.remove('active');
+            }
+        });
+
+        async function downloadPDF() {
+            loading.classList.add('show');
+            
+            try {
+                // Create a clean copy of the preview content for PDF
+                const element = document.createElement('div');
+                element.innerHTML = preview.innerHTML;
+                
+                // Wrap content in logical sections to improve page breaks
+                const sectionsHtml = element.innerHTML
+                    .replace(/<h([1-6])>/g, '</div><div class="markdown-section"><h$1>')
+                    .replace(/^/, '<div class="markdown-section">')
+                    .replace(/$/, '</div>');
+                
+                element.innerHTML = sectionsHtml;
+                
+                // Style the element for PDF with better table formatting
+                element.style.cssText = `
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    line-height: 1.6;
+                    color: #333;
+                    background: white;
+                    padding: 20px;
+                    max-width: 210mm;
+                    width: 100%;
+                    box-sizing: border-box;
+                `;
+
+                // Get font family mapping
+                const fontFamilyMap = {
+                    'system': `'Segoe UI', Tahoma, Geneva, Verdana, sans-serif`,
+                    'serif': `'Times New Roman', Times, serif`,
+                    'monospace': `'Courier New', 'Monaco', 'Consolas', monospace`,
+                    'arial': `'Arial', 'Helvetica', sans-serif`,
+                    'helvetica': `'Helvetica Neue', 'Helvetica', sans-serif`,
+                    'georgia': `'Georgia', 'Times', serif`
+                };
+
+                const selectedFont = fontFamilyMap[allSettings.typography.fontFamily] || fontFamilyMap.system;
+
+                // Add comprehensive styles for PDF using current settings
+                const pdfStyles = `
+                    <style>
+                        * {
+                            box-sizing: border-box !important;
+                            -webkit-font-smoothing: antialiased !important;
+                            -moz-osx-font-smoothing: grayscale !important;
+                            text-rendering: optimizeLegibility !important;
+                        }
+                        body, div {
+                            margin: 0 !important;
+                            padding: 0 !important;
+                            font-family: ${selectedFont} !important;
+                            font-size: ${allSettings.typography.baseFontSize}px !important;
+                            line-height: ${allSettings.typography.lineHeight} !important;
+                            color: ${allSettings.colors.text} !important;
+                        }
+                        table {
+                            border-collapse: collapse !important;
+                            width: 100% !important;
+                            margin: ${allSettings.table.margin}px 0 !important;
+                            font-size: ${allSettings.table.fontSize}px !important;
+                            border: ${allSettings.table.borderWidth}px solid ${allSettings.table.borderColor} !important;
+                            page-break-inside: auto !important;
+                            font-family: ${selectedFont} !important;
+                        }
+                        th, td {
+                            border: ${allSettings.table.borderWidth}px solid ${allSettings.table.borderColor} !important;
+                            padding: ${allSettings.table.padding}px ${allSettings.table.padding + 4}px !important;
+                            text-align: left !important;
+                            vertical-align: top !important;
+                            word-wrap: break-word !important;
+                            overflow-wrap: break-word !important;
+                            font-size: ${allSettings.table.fontSize}px !important;
+                            line-height: 1.4 !important;
+                            page-break-inside: avoid !important;
+                        }
+                        th {
+                            background-color: ${allSettings.table.headerBg} !important;
+                            font-weight: bold !important;
+                            color: ${allSettings.colors.text} !important;
+                            font-size: ${allSettings.table.fontSize}px !important;
+                            border-bottom: ${allSettings.table.borderWidth + 1}px solid ${allSettings.table.borderColor} !important;
+                            page-break-after: avoid !important;
+                        }
+                        td {
+                            background-color: #fff !important;
+                            color: ${allSettings.colors.text} !important;
+                        }
+                        h1, h2, h3, h4, h5, h6 {
+                            color: ${allSettings.colors.heading} !important;
+                            margin: ${allSettings.spacing.heading}px 0 ${allSettings.spacing.heading * 0.5}px 0 !important;
+                            page-break-after: avoid !important;
+                            page-break-inside: avoid !important;
+                            orphans: 3 !important;
+                            widows: 3 !important;
+                            line-height: 1.2 !important;
+                            font-family: ${selectedFont} !important;
+                            font-weight: bold !important;
+                        }
+                        h1 { 
+                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 2}px !important;
+                            page-break-before: auto !important;
+                        }
+                        h2 { 
+                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 1.5}px !important;
+                            page-break-before: auto !important;
+                        }
+                        h3 { 
+                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 1.25}px !important;
+                            page-break-before: auto !important;
+                        }
+                        h4 { 
+                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale}px !important;
+                            page-break-before: auto !important;
+                        }
+                        h5 { 
+                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 0.875}px !important;
+                            page-break-before: auto !important;
+                        }
+                        h6 { 
+                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 0.75}px !important;
+                            page-break-before: auto !important;
+                        }
+                        p {
+                            margin: 0 0 ${allSettings.spacing.paragraph}px 0 !important;
+                            color: ${allSettings.colors.text} !important;
+                            line-height: ${allSettings.typography.lineHeight} !important;
+                            font-size: ${allSettings.typography.baseFontSize}px !important;
+                            font-family: ${selectedFont} !important;
+                            orphans: 3 !important;
+                            widows: 3 !important;
+                            page-break-inside: avoid !important;
+                        }
+                        /* Keep heading with following content */
+                        h1 + p, h1 + ul, h1 + ol, h1 + table, h1 + pre, h1 + blockquote {
+                            page-break-before: avoid !important;
+                        }
+                        h2 + p, h2 + ul, h2 + ol, h2 + table, h2 + pre, h2 + blockquote {
+                            page-break-before: avoid !important;
+                        }
+                        h3 + p, h3 + ul, h3 + ol, h3 + table, h3 + pre, h3 + blockquote {
+                            page-break-before: avoid !important;
+                        }
+                        h4 + p, h4 + ul, h4 + ol, h4 + table, h4 + pre, h4 + blockquote {
+                            page-break-before: avoid !important;
+                        }
+                        h5 + p, h5 + ul, h5 + ol, h5 + table, h5 + pre, h5 + blockquote {
+                            page-break-before: avoid !important;
+                        }
+                        h6 + p, h6 + ul, h6 + ol, h6 + table, h6 + pre, h6 + blockquote {
+                            page-break-before: avoid !important;
+                        }
+                        pre {
+                            background-color: ${allSettings.code.background} !important;
+                            border: 1px solid ${allSettings.colors.blockquote} !important;
+                            padding: ${allSettings.code.padding}px !important;
+                            border-radius: ${allSettings.code.radius}px !important;
+                            white-space: pre-wrap !important;
+                            word-wrap: break-word !important;
+                            font-size: ${allSettings.code.fontSize}px !important;
+                            margin: ${allSettings.spacing.paragraph}px 0 !important;
+                            font-family: 'Courier New', 'Monaco', monospace !important;
+                            line-height: 1.4 !important;
+                            page-break-inside: avoid !important;
+                            orphans: 3 !important;
+                            widows: 3 !important;
+                        }
+                        code {
+                            background-color: ${allSettings.code.background} !important;
+                            padding: 3px 6px !important;
+                            border-radius: ${allSettings.code.radius * 0.5}px !important;
+                            font-family: 'Courier New', 'Monaco', monospace !important;
+                            font-size: ${allSettings.code.fontSize}px !important;
+                            border: 1px solid ${allSettings.colors.blockquote} !important;
+                        }
+                        blockquote {
+                            border-left: 4px solid ${allSettings.colors.blockquote} !important;
+                            margin: ${allSettings.spacing.blockquote}px 0 !important;
+                            padding: 0 0 0 15px !important;
+                            color: ${allSettings.colors.text} !important;
+                            font-style: italic !important;
+                            font-size: ${allSettings.typography.baseFontSize}px !important;
+                            line-height: ${allSettings.typography.lineHeight} !important;
+                            page-break-inside: avoid !important;
+                            orphans: 3 !important;
+                            widows: 3 !important;
+                        }
+                        ul, ol {
+                            margin: ${allSettings.spacing.paragraph}px 0 !important;
+                            padding-left: 25px !important;
+                            page-break-inside: avoid !important;
+                            orphans: 3 !important;
+                            widows: 3 !important;
+                        }
+                        li {
+                            margin: 0 0 ${allSettings.spacing.list}px 0 !important;
+                            font-size: ${allSettings.typography.baseFontSize}px !important;
+                            line-height: ${allSettings.typography.lineHeight} !important;
+                            color: ${allSettings.colors.text} !important;
+                            page-break-inside: avoid !important;
+                        }
+                        a {
+                            color: ${allSettings.colors.link} !important;
+                            text-decoration: underline !important;
+                        }
+                        img {
+                            max-width: 100% !important;
+                            height: auto !important;
+                            page-break-inside: avoid !important;
+                        }
+                        hr {
+                            border: none !important;
+                            border-top: 2px solid ${allSettings.colors.blockquote} !important;
+                            margin: ${allSettings.spacing.heading}px 0 !important;
+                            page-break-after: avoid !important;
+                        }
+                        /* Additional page break rules for better content flow */
+                        .markdown-section {
+                            page-break-inside: avoid !important;
+                        }
+                        /* Prevent very short content at bottom of page */
+                        @page {
+                            margin: 2cm !important;
+                            orphans: 4 !important;
+                            widows: 4 !important;
+                        }
+                    </style>
+                `;
+                
+                // Prepend styles to the element
+                element.innerHTML = pdfStyles + element.innerHTML;
+
+                // Configure PDF options with dynamic sizing
+                const opt = {
+                    margin: [15, 15, 15, 15],
+                    filename: `markdown-document-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.pdf`,
+                    image: { type: 'jpeg', quality: 1.0 },
+                    html2canvas: { 
+                        scale: 2,
+                        useCORS: true,
+                        letterRendering: true,
+                        logging: false,
+                        allowTaint: true,
+                        backgroundColor: '#ffffff',
+                        scrollX: 0,
+                        scrollY: 0,
+                        windowWidth: 1200,
+                        windowHeight: 1600,
+                        dpi: 300,
+                        foreignObjectRendering: true,
+                        imageTimeout: 15000,
+                        removeContainer: true
+                    },
+                    jsPDF: { 
+                        unit: 'mm', 
+                        format: 'a4', 
+                        orientation: 'portrait',
+                        compress: false,
+                        precision: 16
+                    },
+                    pagebreak: { 
+                        mode: ['css', 'legacy'],
+                        avoid: ['tr', 'td', 'th', 'img']
+                    }
+                };
+
+                // Generate and download PDF
+                await html2pdf().set(opt).from(element).save();
+                
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                
+                // Enhanced fallback method with better content processing
+                try {
+                    await generateComprehensivePDF();
+                } catch (fallbackError) {
+                    console.error('Fallback PDF generation failed:', fallbackError);
+                    alert('Error generating PDF. Please try copying your content and using an external markdown to PDF converter.');
+                }
+            } finally {
+                loading.classList.remove('show');
+            }
+        }
+
+        async function generateComprehensivePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                unit: 'mm',
+                format: 'a4',
+                orientation: 'portrait',
+                compress: false,
+                precision: 16
+            });
+            
+            // Get the markdown text and process it properly
+            const markdownText = editor.value;
+            const htmlContent = preview.innerHTML;
+            
+            // Create a temporary div to parse HTML content
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = htmlContent;
+            
+            let yPosition = 20;
+            const lineHeight = allSettings.typography.lineHeight * 4; // Convert to PDF units
+            const margin = 20;
+            const pageWidth = 210 - (margin * 2);
+            const pageHeight = 297 - (margin * 2);
+            
+            doc.setFont('helvetica');
+            doc.setFontSize(allSettings.typography.baseFontSize);
+            
+            // Process all content recursively
+            await processAllNodes(doc, tempDiv, yPosition, margin, pageWidth, pageHeight);
+            
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+            doc.save(`markdown-document-${timestamp}.pdf`);
+        }
+
+        async function processAllNodes(doc, container, startY, margin, pageWidth, pageHeight) {
+            let yPosition = startY;
+            const nodes = container.childNodes;
+            
+            for (let i = 0; i < nodes.length; i++) {
+                const node = nodes[i];
+                
+                // Check if we need a new page
+                if (yPosition > pageHeight - 30) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+                
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                    const tagName = node.tagName.toLowerCase();
+                    
+                    switch (tagName) {
+                        case 'table':
+                            yPosition = await drawEnhancedTable(doc, node, yPosition, margin, pageWidth, pageHeight);
+                            break;
+                        case 'h1':
+                        case 'h2':
+                        case 'h3':
+                        case 'h4':
+                        case 'h5':
+                        case 'h6':
+                            yPosition = await drawHeading(doc, node, yPosition, margin, pageWidth, pageHeight);
+                            break;
+                        case 'p':
+                            yPosition = await drawParagraph(doc, node, yPosition, margin, pageWidth, pageHeight);
+                            break;
+                        case 'pre':
+                            yPosition = await drawCodeBlock(doc, node, yPosition, margin, pageWidth, pageHeight);
+                            break;
+                        case 'blockquote':
+                            yPosition = await drawBlockquote(doc, node, yPosition, margin, pageWidth, pageHeight);
+                            break;
+                        case 'ul':
+                        case 'ol':
+                            yPosition = await drawList(doc, node, yPosition, margin, pageWidth, pageHeight);
+                            break;
+                        case 'br':
+                            yPosition += 6;
+                            break;
+                        default:
+                            // Process child nodes for other elements
+                            if (node.textContent.trim()) {
+                                yPosition = await drawTextContent(doc, node, yPosition, margin, pageWidth, pageHeight);
+                            }
+                            break;
+                    }
+                } else if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+                    yPosition = await drawTextNode(doc, node, yPosition, margin, pageWidth, pageHeight);
+                }
+                
+                yPosition += 3; // Small space between elements
+            }
+            
+            return yPosition;
+        }
+
+        async function drawHeading(doc, element, startY, margin, pageWidth, pageHeight) {
+            const level = parseInt(element.tagName[1]);
+            const scaleFactors = [2, 1.5, 1.25, 1, 0.875, 0.75];
+            let fontSize = Math.max(allSettings.typography.baseFontSize * allSettings.typography.headingScale * scaleFactors[level - 1], 12);
+            if (level === 1) {
+                fontSize = allSettings.typography.titleFontSize;
+            }
+            const text = element.textContent.trim();
+            
+            if (!text) return startY;
+            
+            // Check if we need a new page for heading + at least 2 lines of content
+            const requiredSpace = fontSize + 20; // Heading + minimum content space
+            if (startY + requiredSpace > pageHeight - 20) {
+                doc.addPage();
+                startY = 20;
+            }
+            
+            doc.setFontSize(fontSize);
+            doc.setFont('helvetica', 'bold');
+            
+            // Parse heading color
+            const headingColor = allSettings.colors.heading;
+            const headingR = parseInt(headingColor.slice(1, 3), 16);
+            const headingG = parseInt(headingColor.slice(3, 5), 16);
+            const headingB = parseInt(headingColor.slice(5, 7), 16);
+            doc.setTextColor(headingR, headingG, headingB);
+            
+            const textLines = doc.splitTextToSize(text, pageWidth);
+            let yPosition = startY;
+            
+            for (let line of textLines) {
+                if (yPosition > pageHeight - 20) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+                doc.text(line, margin, yPosition);
+                yPosition += fontSize + 2;
+            }
+            
+            return yPosition + allSettings.spacing.heading;
+        }
+
+        async function drawParagraph(doc, element, startY, margin, pageWidth, pageHeight) {
+            const text = element.textContent.trim();
+            if (!text) return startY;
+            
+            doc.setFontSize(allSettings.typography.baseFontSize);
+            doc.setFont('helvetica', 'normal');
+            
+            // Parse text color
+            const textColor = allSettings.colors.text;
+            const textR = parseInt(textColor.slice(1, 3), 16);
+            const textG = parseInt(textColor.slice(3, 5), 16);
+            const textB = parseInt(textColor.slice(5, 7), 16);
+            doc.setTextColor(textR, textG, textB);
+            
+            const textLines = doc.splitTextToSize(text, pageWidth);
+            let yPosition = startY;
+            
+            for (let line of textLines) {
+                if (yPosition > pageHeight - 30) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+                doc.text(line, margin, yPosition);
+                yPosition += allSettings.typography.baseFontSize * allSettings.typography.lineHeight * 0.4;
+            }
+            
+            return yPosition + allSettings.spacing.paragraph;
+        }
+
+        async function drawCodeBlock(doc, element, startY, margin, pageWidth, pageHeight) {
+            const text = element.textContent.trim();
+            if (!text) return startY;
+            
+            doc.setFontSize(allSettings.code.fontSize);
+            doc.setFont('courier', 'normal');
+            
+            // Parse text color
+            const textColor = allSettings.colors.text;
+            const textR = parseInt(textColor.slice(1, 3), 16);
+            const textG = parseInt(textColor.slice(3, 5), 16);
+            const textB = parseInt(textColor.slice(5, 7), 16);
+            doc.setTextColor(textR, textG, textB);
+            
+            // Draw background rectangle
+            const lines = text.split('\n');
+            const lineHeight = allSettings.code.fontSize * 0.8;
+            const blockHeight = lines.length * lineHeight + allSettings.code.padding * 2;
+            
+            let yPosition = startY;
+            if (yPosition + blockHeight > pageHeight - 30) {
+                doc.addPage();
+                yPosition = 20;
+            }
+            
+            // Parse code background color
+            const codeBg = allSettings.code.background;
+            const bgR = parseInt(codeBg.slice(1, 3), 16);
+            const bgG = parseInt(codeBg.slice(3, 5), 16);
+            const bgB = parseInt(codeBg.slice(5, 7), 16);
+            doc.setFillColor(bgR, bgG, bgB);
+            doc.rect(margin, yPosition, pageWidth, blockHeight, 'F');
+            
+            // Parse blockquote border color for code border
+            const borderColor = allSettings.colors.blockquote;
+            const borderR = parseInt(borderColor.slice(1, 3), 16);
+            const borderG = parseInt(borderColor.slice(3, 5), 16);
+            const borderB = parseInt(borderColor.slice(5, 7), 16);
+            doc.setDrawColor(borderR, borderG, borderB);
+            doc.rect(margin, yPosition, pageWidth, blockHeight, 'S');
+            
+            yPosition += allSettings.code.padding;
+            for (let line of lines) {
+                const wrappedLines = doc.splitTextToSize(line, pageWidth - allSettings.code.padding * 2);
+                for (let wrappedLine of wrappedLines) {
+                    doc.text(wrappedLine, margin + allSettings.code.padding, yPosition);
+                    yPosition += lineHeight;
+                }
+            }
+            
+            return yPosition + allSettings.code.padding + allSettings.spacing.paragraph;
+        }
+
+        async function drawBlockquote(doc, element, startY, margin, pageWidth, pageHeight) {
+            const text = element.textContent.trim();
+            if (!text) return startY;
+            
+            doc.setFontSize(allSettings.typography.baseFontSize);
+            doc.setFont('helvetica', 'italic');
+            
+            // Parse text color
+            const textColor = allSettings.colors.text;
+            const textR = parseInt(textColor.slice(1, 3), 16);
+            const textG = parseInt(textColor.slice(3, 5), 16);
+            const textB = parseInt(textColor.slice(5, 7), 16);
+            doc.setTextColor(textR, textG, textB);
+            
+            // Draw left border with blockquote color
+            const borderColor = allSettings.colors.blockquote;
+            const borderR = parseInt(borderColor.slice(1, 3), 16);
+            const borderG = parseInt(borderColor.slice(3, 5), 16);
+            const borderB = parseInt(borderColor.slice(5, 7), 16);
+            doc.setDrawColor(borderR, borderG, borderB);
+            doc.setLineWidth(2);
+            
+            const textLines = doc.splitTextToSize(text, pageWidth - 15);
+            let yPosition = startY;
+            const lineHeight = allSettings.typography.baseFontSize * allSettings.typography.lineHeight * 0.4;
+            
+            // Draw border for the entire blockquote height
+            const blockHeight = textLines.length * lineHeight + allSettings.spacing.blockquote;
+            doc.line(margin, startY, margin, startY + blockHeight);
+            
+            for (let line of textLines) {
+                if (yPosition > pageHeight - 30) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+                doc.text(line, margin + 10, yPosition);
+                yPosition += lineHeight;
+            }
+            
+            doc.setLineWidth(0.2); // Reset line width
+            return yPosition + allSettings.spacing.blockquote;
+        }
+
+        async function drawList(doc, element, startY, margin, pageWidth, pageHeight) {
+            const items = element.querySelectorAll('li');
+            const isOrdered = element.tagName.toLowerCase() === 'ol';
+            
+            doc.setFontSize(allSettings.typography.baseFontSize);
+            doc.setFont('helvetica', 'normal');
+            
+            // Parse text color
+            const textColor = allSettings.colors.text;
+            const textR = parseInt(textColor.slice(1, 3), 16);
+            const textG = parseInt(textColor.slice(3, 5), 16);
+            const textB = parseInt(textColor.slice(5, 7), 16);
+            doc.setTextColor(textR, textG, textB);
+            
+            let yPosition = startY;
+            const lineHeight = allSettings.typography.baseFontSize * allSettings.typography.lineHeight * 0.4;
+            
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                const text = item.textContent.trim();
+                if (!text) continue;
+                
+                const bullet = isOrdered ? `${i + 1}.` : '•';
+                const fullText = `${bullet} ${text}`;
+                
+                const textLines = doc.splitTextToSize(fullText, pageWidth - 20);
+                
+                for (let j = 0; j < textLines.length; j++) {
+                    if (yPosition > pageHeight - 30) {
+                        doc.addPage();
+                        yPosition = 20;
+                    }
+                    
+                    const xPos = j === 0 ? margin : margin + 15;
+                    doc.text(textLines[j], xPos, yPosition);
+                    yPosition += lineHeight;
+                }
+                yPosition += allSettings.spacing.list;
+            }
+            
+            return yPosition + allSettings.spacing.paragraph;
+        }
+
+        async function drawTextContent(doc, element, startY, margin, pageWidth, pageHeight) {
+            const text = element.textContent.trim();
+            if (!text) return startY;
+            
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(0, 0, 0);
+            
+            const textLines = doc.splitTextToSize(text, pageWidth);
+            let yPosition = startY;
+            
+            for (let line of textLines) {
+                if (yPosition > pageHeight - 30) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+                doc.text(line, margin, yPosition);
+                yPosition += 6;
+            }
+            
+            return yPosition;
+        }
+
+        async function drawTextNode(doc, node, startY, margin, pageWidth, pageHeight) {
+            const text = node.textContent.trim();
+            if (!text) return startY;
+            
+            const textLines = doc.splitTextToSize(text, pageWidth);
+            let yPosition = startY;
+            
+            for (let line of textLines) {
+                if (yPosition > pageHeight - 30) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+                doc.text(line, margin, yPosition);
+                yPosition += 6;
+            }
+            
+            return yPosition;
+        }
+
+        async function drawEnhancedTable(doc, table, startY, margin, pageWidth, pageHeight) {
+            let yPosition = startY;
+            const rows = table.querySelectorAll('tr');
+            const cellPadding = allSettings.table.padding;
+            const minRowHeight = allSettings.table.fontSize + 4;
+            
+            if (rows.length === 0) return yPosition;
+            
+            // Calculate column widths based on content
+            const cols = rows[0].querySelectorAll('th, td').length;
+            const colWidth = (pageWidth - (cols + 1)) / cols;
+            
+            doc.setFontSize(allSettings.table.fontSize);
+            
+            // Parse border color
+            const borderColor = allSettings.table.borderColor;
+            const borderR = parseInt(borderColor.slice(1, 3), 16);
+            const borderG = parseInt(borderColor.slice(3, 5), 16);
+            const borderB = parseInt(borderColor.slice(5, 7), 16);
+            
+            // Parse header background color
+            const headerBg = allSettings.table.headerBg;
+            const headerR = parseInt(headerBg.slice(1, 3), 16);
+            const headerG = parseInt(headerBg.slice(3, 5), 16);
+            const headerB = parseInt(headerBg.slice(5, 7), 16);
+            
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const cells = row.querySelectorAll('th, td');
+                const isHeader = row.querySelectorAll('th').length > 0;
+                
+                let maxCellHeight = minRowHeight;
+                let cellTexts = [];
+                
+                // Prepare cell texts and calculate row height
+                for (let j = 0; j < cells.length; j++) {
+                    const cell = cells[j];
+                    const text = cell.textContent.trim();
+                    const wrappedText = doc.splitTextToSize(text, colWidth - cellPadding * 2);
+                    cellTexts.push(wrappedText);
+                    
+                    const cellHeight = Math.max(minRowHeight, wrappedText.length * (allSettings.table.fontSize * 0.5) + cellPadding * 2);
+                    maxCellHeight = Math.max(maxCellHeight, cellHeight);
+                }
+                
+                // Check if we need a new page for this row
+                if (yPosition + maxCellHeight > pageHeight - 30) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+                
+                // Draw row background for headers
+                if (isHeader) {
+                    doc.setFillColor(headerR, headerG, headerB);
+                    doc.rect(margin, yPosition, pageWidth, maxCellHeight, 'F');
+                }
+                
+                // Draw cell borders and content
+                for (let j = 0; j < cells.length; j++) {
+                    const xPosition = margin + (j * colWidth);
+                    
+                    // Draw cell border with user-defined color and width
+                    doc.setDrawColor(borderR, borderG, borderB);
+                    doc.setLineWidth(allSettings.table.borderWidth * 0.5);
+                    doc.rect(xPosition, yPosition, colWidth, maxCellHeight, 'S');
+                    
+                    // Set text style
+                    if (isHeader) {
+                        doc.setFont('helvetica', 'bold');
+                        doc.setFontSize(allSettings.table.fontSize);
+                    } else {
+                        doc.setFont('helvetica', 'normal');
+                        doc.setFontSize(allSettings.table.fontSize);
+                    }
+                    
+                    // Parse text color
+                    const textColor = allSettings.colors.text;
+                    const textR = parseInt(textColor.slice(1, 3), 16);
+                    const textG = parseInt(textColor.slice(3, 5), 16);
+                    const textB = parseInt(textColor.slice(5, 7), 16);
+                    doc.setTextColor(textR, textG, textB);
+                    
+                    // Draw cell text
+                    const cellText = cellTexts[j];
+                    for (let k = 0; k < cellText.length; k++) {
+                        doc.text(cellText[k], xPosition + cellPadding, yPosition + cellPadding + (k * (allSettings.table.fontSize * 0.5)) + allSettings.table.fontSize * 0.8);
+                    }
+                }
+                
+                yPosition += maxCellHeight;
+            }
+            
+            doc.setLineWidth(0.2); // Reset line width
+            return yPosition + allSettings.table.margin; // Use table margin setting
+        }
+
+        // Keyboard shortcuts
+        editor.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + S to download PDF
+            if ((e.ctrlKey || e.metaKey) && e.key === 's' && !e.shiftKey) {
+                e.preventDefault();
+                downloadPDF();
+            }
+            
+            // Ctrl/Cmd + Shift + S to save to history
+            if ((e.ctrlKey || e.metaKey) && e.key === 'S' && e.shiftKey) {
+                e.preventDefault();
+                saveCurrentDocument();
+            }
+            
+            // Ctrl/Cmd + H to switch to history tab
+            if ((e.ctrlKey || e.metaKey) && e.key === 'h') {
+                e.preventDefault();
+                switchEditorTab('history');
+            }
+            
+            // Tab key handling for better editing experience
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                
+                // Insert 4 spaces
+                this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
+                this.selectionStart = this.selectionEnd = start + 4;
+                updatePreview();
+            }
+        });
+
+        // Auto-resize editor based on content (disabled on mobile for better performance)
+        if (window.innerWidth > 768) {
+            editor.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, window.innerHeight * 0.7) + 'px';
+            });
+        }
+
+        // Handle window resize
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                // Force re-render on orientation change
+                if (window.innerWidth !== window.lastWidth) {
+                    updatePreview();
+                    window.lastWidth = window.innerWidth;
+                }
+            }, 250);
+        });
+
+        // Prevent zoom on double tap for iOS
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Initialize
+        window.addEventListener('load', function() {
+            loadSample();
+            window.lastWidth = window.innerWidth;
+            loadAllSettings();
+            initializeAutoSave(); // Start auto-save functionality
+        });
+
+        // Settings Panel Functions
+        let allSettings = {
+            table: {
+                padding: 8,
+                margin: 16,
+                borderWidth: 1,
+                borderColor: '#333333',
+                headerBg: '#f5f5f5',
+                fontSize: 14
+            },
+            typography: {
+                baseFontSize: 12,
+                lineHeight: 1.2,
+                fontFamily: 'system',
+                headingScale: 1.1,
+                titleFontSize: 24
+            },
+            code: {
+                fontSize: 14,
+                padding: 16,
+                background: '#f8f8f8',
+                radius: 6
+            },
+            colors: {
+                text: '#333333',
+                link: '#0066cc',
+                heading: '#2c3e50',
+                blockquote: '#dddddd'
+            },
+            spacing: {
+                paragraph: 8,
+                heading: 16,
+                list: 4,
+                blockquote: 12
+            }
+        };
+
+        let currentTab = 'editor';
+        let currentSettingsTab = 'table';
+
+        function switchEditorTab(tabName) {
+            if (currentTab === tabName) return;
+            
+            const editorPanel = document.getElementById('editorPanel');
+            const historyPanel = document.getElementById('historyPanel');
+            const settingsPanel = document.getElementById('settingsPanel');
+            const editorTab = document.querySelector('[data-tab="editor"]');
+            const historyTab = document.querySelector('[data-tab="history"]');
+            const settingsTab = document.querySelector('[data-tab="settings"]');
+            
+            // Remove active class from all tabs and panels
+            [editorTab, historyTab, settingsTab].forEach(tab => tab && tab.classList.remove('active'));
+            [editorPanel, historyPanel, settingsPanel].forEach(panel => panel && panel.classList.remove('active'));
+            
+            // Update tab appearance and show corresponding panel
+            if (tabName === 'editor') {
+                editorTab.classList.add('active');
+                setTimeout(() => {
+                    editorPanel.classList.add('active');
+                }, 200);
+                
+            } else if (tabName === 'history') {
+                historyTab.classList.add('active');
+                setTimeout(() => {
+                    historyPanel.classList.add('active');
+                    loadHistoryList(); // Load history when switching to history tab
+                }, 200);
+                
+            } else if (tabName === 'settings') {
+                settingsTab.classList.add('active');
+                setTimeout(() => {
+                    settingsPanel.classList.add('active');
+                }, 200);
+            }
+            
+            currentTab = tabName;
+        }
+
+        function switchSettingsTab(tabName) {
+            if (currentSettingsTab === tabName) return;
+            
+            // Hide current tab content
+            const currentContent = document.getElementById(currentSettingsTab + 'Tab');
+            const newContent = document.getElementById(tabName + 'Tab');
+            const currentTabBtn = document.querySelector(`[data-settings-tab="${currentSettingsTab}"]`);
+            const newTabBtn = document.querySelector(`[data-settings-tab="${tabName}"]`);
+            
+            if (currentContent) currentContent.classList.remove('active');
+            if (currentTabBtn) currentTabBtn.classList.remove('active');
+            
+            // Show new tab content
+            if (newContent) newContent.classList.add('active');
+            if (newTabBtn) newTabBtn.classList.add('active');
+            
+            currentSettingsTab = tabName;
+        }
+
+        // Table Settings Functions
+        function updateTableSettings() {
+            allSettings.table.padding = parseInt(document.getElementById('tablePadding').value);
+            allSettings.table.margin = parseInt(document.getElementById('tableMargin').value);
+            const bwElem = document.getElementById('borderWidth');
+            if (bwElem) allSettings.table.borderWidth = parseInt(bwElem.value);
+            allSettings.table.borderColor = document.getElementById('borderColor').value;
+            allSettings.table.headerBg = document.getElementById('headerBg').value;
+            allSettings.table.fontSize = parseInt(document.getElementById('tableFontSize').value);
+
+            // Update display values
+            document.getElementById('tablePaddingValue').textContent = allSettings.table.padding + 'px';
+            document.getElementById('tableMarginValue').textContent = allSettings.table.margin + 'px';
+            if (document.getElementById('borderWidthValue')) document.getElementById('borderWidthValue').textContent = allSettings.table.borderWidth + 'px';
+            document.getElementById('borderColorValue').textContent = allSettings.table.borderColor;
+            document.getElementById('headerBgValue').textContent = allSettings.table.headerBg;
+            document.getElementById('tableFontSizeValue').textContent = allSettings.table.fontSize + 'px';
+
+            applyAllStyles();
+            saveAllSettings();
+        }
+
+        // Typography Settings Functions
+        function updateTypographySettings() {
+            const baseElem = document.getElementById('baseFontSize');
+            if (baseElem) {
+                allSettings.typography.baseFontSize = parseInt(baseElem.value);
+            }
+            allSettings.typography.lineHeight = parseFloat(document.getElementById('lineHeight').value);
+            allSettings.typography.fontFamily = document.getElementById('fontFamily').value;
+            allSettings.typography.headingScale = parseFloat(document.getElementById('headingScale').value);
+            allSettings.typography.titleFontSize = parseInt(document.getElementById('titleFontSize').value);
+
+            // Update display values
+            if (document.getElementById('baseFontSizeValue')) {
+                document.getElementById('baseFontSizeValue').textContent = allSettings.typography.baseFontSize + 'px';
+            }
+            document.getElementById('lineHeightValue').textContent = allSettings.typography.lineHeight;
+            document.getElementById('headingScaleValue').textContent = allSettings.typography.headingScale + 'x';
+            document.getElementById('titleFontSizeValue').textContent = allSettings.typography.titleFontSize + 'px';
+
+            applyAllStyles();
+            saveAllSettings();
+        }
+
+        // Code Settings Functions
+        function updateCodeSettings() {
+            allSettings.code.fontSize = parseInt(document.getElementById('codeFontSize').value);
+            allSettings.code.padding = parseInt(document.getElementById('codePadding').value);
+            allSettings.code.background = document.getElementById('codeBackground').value;
+            allSettings.code.radius = parseInt(document.getElementById('codeRadius').value);
+
+            // Update display values
+            document.getElementById('codeFontSizeValue').textContent = allSettings.code.fontSize + 'px';
+            document.getElementById('codePaddingValue').textContent = allSettings.code.padding + 'px';
+            document.getElementById('codeBackgroundValue').textContent = allSettings.code.background;
+            document.getElementById('codeRadiusValue').textContent = allSettings.code.radius + 'px';
+
+            applyAllStyles();
+            saveAllSettings();
+        }
+
+        // Color Settings Functions
+        function updateColorSettings() {
+            const linkInput = document.getElementById('linkColor');
+            if (linkInput) allSettings.colors.link = linkInput.value;
+            const headingInput = document.getElementById('headingColor');
+            if (headingInput) allSettings.colors.heading = headingInput.value;
+            const textInput = document.getElementById('textColor');
+            if (textInput) allSettings.colors.text = textInput.value;
+
+            // Update display values
+            if (document.getElementById('linkColorValue')) document.getElementById('linkColorValue').textContent = allSettings.colors.link;
+            if (document.getElementById('headingColorValue')) document.getElementById('headingColorValue').textContent = allSettings.colors.heading;
+            if (document.getElementById('textColorValue')) document.getElementById('textColorValue').textContent = allSettings.colors.text;
+
+            applyAllStyles();
+            saveAllSettings();
+        }
+
+        // Spacing Settings Functions
+        function updateSpacingSettings() {
+            allSettings.spacing.paragraph = parseInt(document.getElementById('paragraphSpacing').value);
+            allSettings.spacing.heading = parseInt(document.getElementById('headingSpacing').value);
+            allSettings.spacing.list = parseInt(document.getElementById('listSpacing').value);
+            allSettings.spacing.blockquote = parseInt(document.getElementById('blockquoteSpacing').value);
+
+            // Update display values
+            document.getElementById('paragraphSpacingValue').textContent = allSettings.spacing.paragraph + 'px';
+            document.getElementById('headingSpacingValue').textContent = allSettings.spacing.heading + 'px';
+            document.getElementById('listSpacingValue').textContent = allSettings.spacing.list + 'px';
+            document.getElementById('blockquoteSpacingValue').textContent = allSettings.spacing.blockquote + 'px';
+
+            applyAllStyles();
+            saveAllSettings();
+        }
+
+        function applyAllStyles() {
+            let styleElement = document.getElementById('dynamicAllStyles');
+            if (!styleElement) {
+                styleElement = document.createElement('style');
+                styleElement.id = 'dynamicAllStyles';
+                document.head.appendChild(styleElement);
+            }
+
+            const fontFamilyMap = {
+                'system': `-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif`,
+                'serif': `'Times New Roman', Times, serif`,
+                'monospace': `'Courier New', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Courier New', monospace`,
+                'arial': `'Arial', 'Helvetica', sans-serif`,
+                'helvetica': `'Helvetica Neue', 'Helvetica', sans-serif`,
+                'georgia': `'Georgia', 'Times', serif`
+            };
+
+            const styles = `
+                /* Typography Styles */
+                .arc {
+                    font-family: ${fontFamilyMap[allSettings.typography.fontFamily]} !important;
+                    font-size: ${allSettings.typography.baseFontSize}px !important;
+                    line-height: ${allSettings.typography.lineHeight} !important;
+                    color: ${allSettings.colors.text} !important;
+                }
+                
+                .arc h1, .arc h2, .arc h3, .arc h4, .arc h5, .arc h6 {
+                    margin-top: ${allSettings.spacing.heading}px !important;
+                    margin-bottom: ${allSettings.spacing.heading * 0.5}px !important;
+                    color: ${allSettings.colors.heading} !important;
+                }
+                
+                .arc h1 { font-size: ${allSettings.typography.titleFontSize}px !important; }
+                .arc h2 { font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 1.5}px !important; }
+                .arc h3 { font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 1.25}px !important; }
+                .arc h4 { font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale}px !important; }
+                .arc h5 { font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 0.875}px !important; }
+                .arc h6 { font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 0.75}px !important; }
+
+                .arc p {
+                    margin-bottom: ${allSettings.spacing.paragraph}px !important;
+                }
+
+                .arc a {
+                    color: ${allSettings.colors.link} !important;
+                }
+
+                /* Table Styles */
+                .arc table {
+                    margin: ${allSettings.table.margin}px 0 !important;
+                    border: ${allSettings.table.borderWidth}px solid ${allSettings.table.borderColor} !important;
+                    font-size: ${allSettings.table.fontSize}px !important;
+                }
+                .arc th, .arc td {
+                    border: ${allSettings.table.borderWidth}px solid ${allSettings.table.borderColor} !important;
+                    padding: ${allSettings.table.padding}px ${allSettings.table.padding + 4}px !important;
+                    font-size: ${allSettings.table.fontSize}px !important;
+                }
+                .arc th {
+                    background-color: ${allSettings.table.headerBg} !important;
+                    border-bottom: ${allSettings.table.borderWidth + 1}px solid ${allSettings.table.borderColor} !important;
+                }
+
+                /* Code Styles */
+                .arc pre {
+                    background-color: ${allSettings.code.background} !important;
+                    padding: ${allSettings.code.padding}px !important;
+                    border-radius: ${allSettings.code.radius}px !important;
+                    font-size: ${allSettings.code.fontSize}px !important;
+                }
+                .arc code {
+                    background-color: ${allSettings.code.background} !important;
+                    font-size: ${allSettings.code.fontSize}px !important;
+                    border-radius: ${allSettings.code.radius * 0.5}px !important;
+                }
+
+                /* List Styles */
+                .arc li {
+                    margin-bottom: ${allSettings.spacing.list}px !important;
+                }
+
+                /* Blockquote Styles */
+                .arc blockquote {
+                    border-left-color: ${allSettings.colors.blockquote} !important;
+                    margin: ${allSettings.spacing.blockquote}px 0 !important;
+                }
+            `;
+
+            styleElement.textContent = styles;
+        }
+
+        function resetAllSettings() {
+            allSettings = {
+                table: {
+                    padding: 8,
+                    margin: 16,
+                    borderWidth: 1,
+                    borderColor: '#333333',
+                    headerBg: '#f5f5f5',
+                    fontSize: 14
+                },
+                typography: {
+                    baseFontSize: 12,
+                    lineHeight: 1.2,
+                    fontFamily: 'system',
+                    headingScale: 1.1,
+                    titleFontSize: 24
+                },
+                code: {
+                    fontSize: 14,
+                    padding: 16,
+                    background: '#f8f8f8',
+                    radius: 6
+                },
+                colors: {
+                    text: '#333333',
+                    link: '#0066cc',
+                    heading: '#2c3e50',
+                    blockquote: '#dddddd'
+                },
+                spacing: {
+                    paragraph: 8,
+                    heading: 16,
+                    list: 4,
+                    blockquote: 12
+                }
+            };
+
+            loadAllSettingsIntoUI();
+            applyAllStyles();
+            saveAllSettings();
+        }
+
+        function loadAllSettingsIntoUI() {
+            // Table settings
+            document.getElementById('tablePadding').value = allSettings.table.padding;
+            document.getElementById('tableMargin').value = allSettings.table.margin;
+            if (document.getElementById('borderWidth')) document.getElementById('borderWidth').value = allSettings.table.borderWidth;
+            document.getElementById('borderColor').value = allSettings.table.borderColor;
+            document.getElementById('headerBg').value = allSettings.table.headerBg;
+            document.getElementById('tableFontSize').value = allSettings.table.fontSize;
+
+            // Typography settings
+            document.getElementById('baseFontSize').value = allSettings.typography.baseFontSize;
+            document.getElementById('lineHeight').value = allSettings.typography.lineHeight;
+            document.getElementById('fontFamily').value = allSettings.typography.fontFamily;
+            document.getElementById('headingScale').value = allSettings.typography.headingScale;
+            document.getElementById('titleFontSize').value = allSettings.typography.titleFontSize;
+
+            // Code settings
+            document.getElementById('codeFontSize').value = allSettings.code.fontSize;
+            document.getElementById('codePadding').value = allSettings.code.padding;
+            document.getElementById('codeBackground').value = allSettings.code.background;
+            document.getElementById('codeRadius').value = allSettings.code.radius;
+
+            // Color settings
+            document.getElementById('textColor').value = allSettings.colors.text;
+            document.getElementById('linkColor').value = allSettings.colors.link;
+            document.getElementById('headingColor').value = allSettings.colors.heading;
+            document.getElementById('blockquoteColor').value = allSettings.colors.blockquote;
+
+            // Spacing settings
+            document.getElementById('paragraphSpacing').value = allSettings.spacing.paragraph;
+            document.getElementById('headingSpacing').value = allSettings.spacing.heading;
+            document.getElementById('listSpacing').value = allSettings.spacing.list;
+            document.getElementById('blockquoteSpacing').value = allSettings.spacing.blockquote;
+
+            // Update all display values
+            updateTableSettings();
+            updateTypographySettings();
+            updateCodeSettings();
+            updateColorSettings();
+            updateSpacingSettings();
+        }
+
+        function saveAllSettings() {
+            localStorage.setItem('allMarkdownSettings', JSON.stringify(allSettings));
+        }
+
+        function loadAllSettings() {
+            const saved = localStorage.getItem('allMarkdownSettings');
+            if (saved) {
+                try {
+                    const savedSettings = JSON.parse(saved);
+                    allSettings = { ...allSettings, ...savedSettings };
+                    loadAllSettingsIntoUI();
+                    applyAllStyles();
+                } catch (e) {
+                    console.log('Error loading settings:', e);
+                    loadAllSettingsIntoUI();
+                }
+            } else {
+                loadAllSettingsIntoUI();
+            }
+        }
+
+        function exportSettings() {
+            const settingsData = JSON.stringify(allSettings, null, 2);
+            const blob = new Blob([settingsData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'markdown-editor-settings.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showCopyNotification('Settings exported successfully!');
+        }
+
+        // Legacy function for backward compatibility
+        function updateTableSettings() {
+            // This ensures the old function calls still work
+            if (document.getElementById('tablePadding')) {
+                allSettings.table.padding = parseInt(document.getElementById('tablePadding').value);
+                allSettings.table.margin = parseInt(document.getElementById('tableMargin').value);
+                allSettings.table.borderWidth = parseInt(document.getElementById('borderWidth').value);
+                allSettings.table.borderColor = document.getElementById('borderColor').value;
+                allSettings.table.headerBg = document.getElementById('headerBg').value;
+                allSettings.table.fontSize = parseInt(document.getElementById('tableFontSize')?.value || document.getElementById('fontSize')?.value || 14);
+
+                // Update display values
+                if (document.getElementById('tablePaddingValue')) document.getElementById('tablePaddingValue').textContent = allSettings.table.padding + 'px';
+                if (document.getElementById('tableMarginValue')) document.getElementById('tableMarginValue').textContent = allSettings.table.margin + 'px';
+                if (document.getElementById('borderWidthValue')) document.getElementById('borderWidthValue').textContent = allSettings.table.borderWidth + 'px';
+                if (document.getElementById('borderColorValue')) document.getElementById('borderColorValue').textContent = allSettings.table.borderColor;
+                if (document.getElementById('headerBgValue')) document.getElementById('headerBgValue').textContent = allSettings.table.headerBg;
+                if (document.getElementById('tableFontSizeValue')) document.getElementById('tableFontSizeValue').textContent = allSettings.table.fontSize + 'px';
+                if (document.getElementById('fontSizeValue')) document.getElementById('fontSizeValue').textContent = allSettings.table.fontSize + 'px';
+
+                applyAllStyles();
+                saveAllSettings();
+            }
+        }
+
+        // Ensure legacy function names work
+        function applyTableStyles() {
+            applyAllStyles();
+        }
+
+        function saveTableSettings() {
+            saveAllSettings();
+        }
+
+        function loadTableSettings() {
+            loadAllSettings();
+        }
+
+        function resetTableSettings() {
+            resetAllSettings();
+        }
+
+        // History Management Functions
+        function saveCurrentDocument() {
+            const editor = document.getElementById('markdownEditor');
+            const content = editor.value.trim();
+            
+            if (!content) {
+                showCopyNotification('No content to save!', false);
+                return;
+            }
+            
+            // Generate title from first line or use default
+            let title = content.split('\n')[0].replace(/^#+\s*/, '').trim();
+            if (!title) {
+                title = 'Untitled Document';
+            }
+            
+            // Limit title length
+            if (title.length > 50) {
+                title = title.substring(0, 47) + '...';
+            }
+            
+            const document_item = {
+                id: Date.now(),
+                title: title,
+                content: content,
+                date: new Date().toISOString(),
+                preview: content.substring(0, 300) + (content.length > 300 ? '...' : '')
+            };
+            
+            // Get existing history
+            let history = JSON.parse(localStorage.getItem('markdownHistory') || '[]');
+            
+            // Add to beginning of array
+            history.unshift(document_item);
+            
+            // Keep only last 50 documents
+            if (history.length > 50) {
+                history = history.slice(0, 50);
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('markdownHistory', JSON.stringify(history));
+            
+            // Refresh history list if currently viewing
+            if (currentTab === 'history') {
+                loadHistoryList();
+            }
+            
+            updateLastSavedContent(); // Update last saved content tracker
+            showCopyNotification('Document saved to history!');
+        }
+        
+        function loadHistoryList() {
+            const historyList = document.getElementById('historyList');
+            const historyEmpty = document.getElementById('historyEmpty');
+            
+            const history = JSON.parse(localStorage.getItem('markdownHistory') || '[]');
+            
+            if (history.length === 0) {
+                historyEmpty.style.display = 'block';
+                historyList.innerHTML = '';
+                historyList.appendChild(historyEmpty);
+                return;
+            }
+            
+            historyEmpty.style.display = 'none';
+            historyList.innerHTML = '';
+            
+            history.forEach((item, index) => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.style.animationDelay = `${index * 0.1}s`;
+                
+                const date = new Date(item.date);
+                const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                historyItem.innerHTML = `
+                    <div class="history-item-header">
+                        <div class="history-item-info">
+                            <div class="history-item-title">${item.title}</div>
+                            <div class="history-item-date">${formattedDate}</div>
+                        </div>
+                        <div class="history-item-actions">
+                            <button class="history-btn" onclick="loadHistoryDocument(${item.id})" title="Load Document">
+                                <i class="fa-solid fa-upload"></i>
+                            </button>
+                            <button class="history-btn delete" onclick="deleteHistoryDocument(${item.id})" title="Delete Document">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="history-item-preview">${item.preview}</div>
+                `;
+                
+                historyList.appendChild(historyItem);
+            });
+        }
+        
+        function loadHistoryDocument(id) {
+            const history = JSON.parse(localStorage.getItem('markdownHistory') || '[]');
+            const document_item = history.find(item => item.id === id);
+            
+            if (document_item) {
+                const editor = document.getElementById('markdownEditor');
+                editor.value = document_item.content;
+                updatePreview();
+                
+                // Switch to editor tab
+                switchEditorTab('editor');
+                
+                showCopyNotification('Document loaded successfully!');
+            }
+        }
+        
+        function deleteHistoryDocument(id) {
+            if (confirm('Are you sure you want to delete this document?')) {
+                let history = JSON.parse(localStorage.getItem('markdownHistory') || '[]');
+                history = history.filter(item => item.id !== id);
+                localStorage.setItem('markdownHistory', JSON.stringify(history));
+                
+                // Refresh history list
+                loadHistoryList();
+                
+                showCopyNotification('Document deleted!');
+            }
+        }
+        
+        function clearHistory() {
+            if (confirm('Are you sure you want to clear all document history? This action cannot be undone.')) {
+                localStorage.removeItem('markdownHistory');
+                loadHistoryList();
+                showCopyNotification('History cleared!');
+            }
+        }
+
+        // Wrap content in logical sections to improve page breaks
+        const sectionsHtml = preview.innerHTML
+            .replace(/<h([1-6])>/g, '</div><div class="markdown-section"><h$1>')
+            .replace(/^/, '<div class="markdown-section">')
+            .replace(/$/, '</div>');
+        
+        preview.innerHTML = sectionsHtml;
+
+        // Auto-save functionality
+        let lastSavedContent = '';
+        let autoSaveInterval;
+        
+        function startAutoSave() {
+            // Clear existing interval if any
+            if (autoSaveInterval) {
+                clearInterval(autoSaveInterval);
+            }
+            
+            // Auto-save every 30 seconds if content has changed
+            autoSaveInterval = setInterval(() => {
+                const currentContent = editor.value.trim();
+                if (currentContent && currentContent !== lastSavedContent && currentContent.length > 50) {
+                    saveCurrentDocument();
+                    lastSavedContent = currentContent;
+                }
+            }, 30000); // 30 seconds
+        }
+        
+        // Start auto-save when page loads
+        function initializeAutoSave() {
+            startAutoSave();
+            lastSavedContent = editor.value.trim();
+        }
+        
+        // Update last saved content when user manually saves
+        function updateLastSavedContent() {
+            lastSavedContent = editor.value.trim();
+        }
+
+        function makeValueFieldsEditable() {
+            // make all value spans editable
+            document.querySelectorAll('span[id$="Value"]').forEach(el => {
+                el.setAttribute('contenteditable', 'true');
+                el.style.cursor = 'text';
+                el.addEventListener('blur', () => {
+                    const idBase = el.id.replace('Value', '');
+                    const control = document.getElementById(idBase);
+                    if (!control) return;
+                    const newVal = el.textContent.replace(/[^0-9.]/g, '');
+                    if (!newVal) return;
+                    control.value = newVal;
+                    if (idBase.startsWith('table')) {
+                        updateTableSettings();
+                    } else if (idBase === 'lineHeight' || idBase === 'headingScale' || idBase === 'titleFontSize' || idBase === 'baseFontSize') {
+                        updateTypographySettings();
+                    } else if (idBase.startsWith('code')) {
+                        updateCodeSettings();
+                    } else if (idBase.endsWith('Color')) {
+                        updateColorSettings();
+                    } else if (idBase.endsWith('Spacing')) {
+                        updateSpacingSettings();
+                    }
+                });
+            });
+        }
+
+        function loadAllSettingsIntoUI() {
+            // Table settings
+            document.getElementById('tablePadding').value = allSettings.table.padding;
+            document.getElementById('tableMargin').value = allSettings.table.margin;
+            if (document.getElementById('borderWidth')) document.getElementById('borderWidth').value = allSettings.table.borderWidth;
+            document.getElementById('borderColor').value = allSettings.table.borderColor;
+            document.getElementById('headerBg').value = allSettings.table.headerBg;
+            document.getElementById('tableFontSize').value = allSettings.table.fontSize;
+
+            // Typography settings
+            document.getElementById('baseFontSize').value = allSettings.typography.baseFontSize;
+            document.getElementById('lineHeight').value = allSettings.typography.lineHeight;
+            document.getElementById('fontFamily').value = allSettings.typography.fontFamily;
+            document.getElementById('headingScale').value = allSettings.typography.headingScale;
+            document.getElementById('titleFontSize').value = allSettings.typography.titleFontSize;
+
+            // Code settings
+            document.getElementById('codeFontSize').value = allSettings.code.fontSize;
+            document.getElementById('codePadding').value = allSettings.code.padding;
+            document.getElementById('codeBackground').value = allSettings.code.background;
+            document.getElementById('codeRadius').value = allSettings.code.radius;
+
+            // Color settings
+            document.getElementById('textColor').value = allSettings.colors.text;
+            document.getElementById('linkColor').value = allSettings.colors.link;
+            document.getElementById('headingColor').value = allSettings.colors.heading;
+            document.getElementById('blockquoteColor').value = allSettings.colors.blockquote;
+
+            // Spacing settings
+            document.getElementById('paragraphSpacing').value = allSettings.spacing.paragraph;
+            document.getElementById('headingSpacing').value = allSettings.spacing.heading;
+            document.getElementById('listSpacing').value = allSettings.spacing.list;
+            document.getElementById('blockquoteSpacing').value = allSettings.spacing.blockquote;
+
+            // Update all display values
+            updateTableSettings();
+            updateTypographySettings();
+            updateCodeSettings();
+            updateColorSettings();
+            updateSpacingSettings();
+        }
+    </script>
+</body>
+</html>
