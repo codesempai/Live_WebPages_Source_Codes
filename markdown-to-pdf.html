@@ -116,8 +116,9 @@ width: 130%;
 
         body {
             margin: 0;
-            padding: 10px;
+            padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.5;
             transition: background-color 0.3s ease, color 0.3s ease;
@@ -146,17 +147,12 @@ width: 130%;
 
         /* Modern Professional CSS */
         .zx {
-            max-width: 1400px;
-            margin: 0 auto;
             background: var(--bg-secondary);
-            border-radius: 12px;
-            box-shadow: 0 4px 20px var(--shadow-color);
             overflow: hidden;
-            height: calc(100vh - 20px);
+            height: 100vh;
             display: flex;
             flex-direction: column;
             min-height: 500px;
-            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
         }
 
@@ -505,12 +501,11 @@ width: 130%;
 
         @media (max-width: 768px) {
             body {
-                padding: 5px;
+                padding: 0;
             }
             
             .zx {
-                border-radius: 10px;
-                height: calc(100vh - 10px);
+                height: 100vh;
             }
             
             .qz {
