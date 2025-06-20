@@ -2132,219 +2132,248 @@ greet('World');
 
             const selectedFont = fontFamilyMap[allSettings.typography.fontFamily] || 'Arial';
             
-            // Clone the preview content and apply inline styles to each element
+            // Clone the preview content
             const clonedContent = preview.cloneNode(true);
             
             // Function to apply inline styles to all elements
-            function applyInlineStyles(element) {
-                const tagName = element.tagName ? element.tagName.toLowerCase() : '';
-                
+            // It takes the cloned element and its corresponding original element from the live preview
+            function applyInlineStyles(clonedElement, originalElement) {
+                if (!originalElement || !clonedElement) {
+                    return;
+                }
+
+                // Get computed styles from the original element for certain properties.
+                // We will *not* copy font-weight, font-style, or color here to avoid unintended overrides.
+                const computedStyle = window.getComputedStyle(originalElement);
+
+                // Explicitly apply styles based on allSettings for elements where settings provide precise control.
+                // These values override any computed styles to ensure user preferences are respected.
+                const tagName = clonedElement.tagName ? clonedElement.tagName.toLowerCase() : '';
                 switch (tagName) {
+                    case 'a':
+                        clonedElement.style.color = allSettings.colors.link;
+                        clonedElement.style.textDecoration = 'underline';
+                        clonedElement.style.fontFamily = selectedFont;
+                        clonedElement.style.fontSize = `${allSettings.typography.baseFontSize}px`;
+                        clonedElement.style.lineHeight = allSettings.typography.lineHeight;
+                        clonedElement.style.fontWeight = 'normal';
+                        clonedElement.style.fontStyle = 'normal';
+                        break;
                     case 'h1':
-                        element.style.cssText = `
-                            font-family: ${selectedFont};
-                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 2}px;
-                            color: ${allSettings.colors.heading};
-                            margin: ${allSettings.spacing.heading}px 0 ${allSettings.spacing.heading * 0.5}px 0;
-                            font-weight: bold;
-                            line-height: 1.2;
-                        `;
+                        clonedElement.style.fontFamily = selectedFont;
+                        clonedElement.style.fontSize = `${allSettings.typography.titleFontSize}px`;
+                        clonedElement.style.color = allSettings.colors.heading;
+                        clonedElement.style.marginTop = `${allSettings.spacing.heading}px`;
+                        clonedElement.style.marginBottom = `${allSettings.spacing.heading * 0.5}px`;
+                        clonedElement.style.fontWeight = 'bold';
+                        clonedElement.style.lineHeight = '1.2';
+                        clonedElement.style.fontStyle = 'normal';
                         break;
                     case 'h2':
-                        element.style.cssText = `
-                            font-family: ${selectedFont};
-                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 1.5}px;
-                            color: ${allSettings.colors.heading};
-                            margin: ${allSettings.spacing.heading}px 0 ${allSettings.spacing.heading * 0.5}px 0;
-                            font-weight: bold;
-                            line-height: 1.2;
-                        `;
+                        clonedElement.style.fontFamily = selectedFont;
+                        clonedElement.style.fontSize = `${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 1.5}px`;
+                        clonedElement.style.color = allSettings.colors.heading;
+                        clonedElement.style.marginTop = `${allSettings.spacing.heading}px`;
+                        clonedElement.style.marginBottom = `${allSettings.spacing.heading * 0.5}px`;
+                        clonedElement.style.fontWeight = 'bold';
+                        clonedElement.style.lineHeight = '1.2';
+                        clonedElement.style.fontStyle = 'normal';
                         break;
                     case 'h3':
-                        element.style.cssText = `
-                            font-family: ${selectedFont};
-                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 1.25}px;
-                            color: ${allSettings.colors.heading};
-                            margin: ${allSettings.spacing.heading}px 0 ${allSettings.spacing.heading * 0.5}px 0;
-                            font-weight: bold;
-                            line-height: 1.2;
-                        `;
+                        clonedElement.style.fontFamily = selectedFont;
+                        clonedElement.style.fontSize = `${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 1.25}px`;
+                        clonedElement.style.color = allSettings.colors.heading;
+                        clonedElement.style.marginTop = `${allSettings.spacing.heading}px`;
+                        clonedElement.style.marginBottom = `${allSettings.spacing.heading * 0.5}px`;
+                        clonedElement.style.fontWeight = 'bold';
+                        clonedElement.style.lineHeight = '1.2';
+                        clonedElement.style.fontStyle = 'normal';
                         break;
                     case 'h4':
-                        element.style.cssText = `
-                            font-family: ${selectedFont};
-                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale}px;
-                            color: ${allSettings.colors.heading};
-                            margin: ${allSettings.spacing.heading}px 0 ${allSettings.spacing.heading * 0.5}px 0;
-                            font-weight: bold;
-                            line-height: 1.2;
-                        `;
+                        clonedElement.style.fontFamily = selectedFont;
+                        clonedElement.style.fontSize = `${allSettings.typography.baseFontSize * allSettings.typography.headingScale}px`;
+                        clonedElement.style.color = allSettings.colors.heading;
+                        clonedElement.style.marginTop = `${allSettings.spacing.heading}px`;
+                        clonedElement.style.marginBottom = `${allSettings.spacing.heading * 0.5}px`;
+                        clonedElement.style.fontWeight = 'bold';
+                        clonedElement.style.lineHeight = '1.2';
+                        clonedElement.style.fontStyle = 'normal';
                         break;
                     case 'h5':
-                        element.style.cssText = `
-                            font-family: ${selectedFont};
-                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 0.875}px;
-                            color: ${allSettings.colors.heading};
-                            margin: ${allSettings.spacing.heading}px 0 ${allSettings.spacing.heading * 0.5}px 0;
-                            font-weight: bold;
-                            line-height: 1.2;
-                        `;
+                        clonedElement.style.fontFamily = selectedFont;
+                        clonedElement.style.fontSize = `${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 0.875}px`;
+                        clonedElement.style.color = allSettings.colors.heading;
+                        clonedElement.style.marginTop = `${allSettings.spacing.heading}px`;
+                        clonedElement.style.marginBottom = `${allSettings.spacing.heading * 0.5}px`;
+                        clonedElement.style.fontWeight = 'bold';
+                        clonedElement.style.lineHeight = '1.2';
+                        clonedElement.style.fontStyle = 'normal';
                         break;
                     case 'h6':
-                        element.style.cssText = `
-                            font-family: ${selectedFont};
-                            font-size: ${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 0.75}px;
-                            color: ${allSettings.colors.heading};
-                            margin: ${allSettings.spacing.heading}px 0 ${allSettings.spacing.heading * 0.5}px 0;
-                            font-weight: bold;
-                            line-height: 1.2;
-                        `;
+                        clonedElement.style.fontFamily = selectedFont;
+                        clonedElement.style.fontSize = `${allSettings.typography.baseFontSize * allSettings.typography.headingScale * 0.75}px`;
+                        clonedElement.style.color = allSettings.colors.heading;
+                        clonedElement.style.marginTop = `${allSettings.spacing.heading}px`;
+                        clonedElement.style.marginBottom = `${allSettings.spacing.heading * 0.5}px`;
+                        clonedElement.style.fontWeight = 'bold';
+                        clonedElement.style.lineHeight = '1.2';
+                        clonedElement.style.fontStyle = 'normal';
                         break;
                     case 'p':
-                        element.style.cssText = `
-                            font-family: ${selectedFont};
-                            font-size: ${allSettings.typography.baseFontSize}px;
-                            line-height: ${allSettings.typography.lineHeight};
-                            color: ${allSettings.colors.text};
-                            margin: 0 0 ${allSettings.spacing.paragraph}px 0;
-                        `;
+                        clonedElement.style.fontFamily = selectedFont;
+                        clonedElement.style.fontSize = `${allSettings.typography.baseFontSize}px`;
+                        clonedElement.style.lineHeight = allSettings.typography.lineHeight;
+                        clonedElement.style.color = allSettings.colors.text;
+                        clonedElement.style.margin = `0 0 ${allSettings.spacing.paragraph}px 0`;
+                        clonedElement.style.fontWeight = 'normal';
+                        clonedElement.style.fontStyle = 'normal';
                         break;
                     case 'ul':
                     case 'ol':
-                        element.style.cssText = `
-                            font-family: ${selectedFont};
-                            font-size: ${allSettings.typography.baseFontSize}px;
-                            color: ${allSettings.colors.text};
-                            margin: ${allSettings.spacing.list}px 0;
-                            padding-left: 25px;
-                        `;
+                        clonedElement.style.fontFamily = selectedFont;
+                        clonedElement.style.fontSize = `${allSettings.typography.baseFontSize}px`;
+                        clonedElement.style.color = allSettings.colors.text;
+                        clonedElement.style.margin = `${allSettings.spacing.list}px 0`;
+                        clonedElement.style.paddingLeft = '25px';
+                        clonedElement.style.fontWeight = 'normal';
+                        clonedElement.style.fontStyle = 'normal';
                         break;
                     case 'li':
-                        element.style.cssText = `
-                            font-family: ${selectedFont};
-                            font-size: ${allSettings.typography.baseFontSize}px;
-                            color: ${allSettings.colors.text};
-                            margin: 0 0 ${allSettings.spacing.list * 0.5}px 0;
-                        `;
+                        clonedElement.style.fontFamily = selectedFont;
+                        clonedElement.style.fontSize = `${allSettings.typography.baseFontSize}px`;
+                        clonedElement.style.color = allSettings.colors.text;
+                        clonedElement.style.margin = `0 0 ${allSettings.spacing.list * 0.5}px 0`;
                         break;
                     case 'blockquote':
-                        element.style.cssText = `
-                            font-family: ${selectedFont};
-                            font-size: ${allSettings.typography.baseFontSize}px;
-                            color: ${allSettings.colors.blockquote};
-                            border-left: 4px solid ${allSettings.colors.blockquote};
-                            margin: ${allSettings.spacing.blockquote}px 0;
-                            padding: 0 0 0 16px;
-                            font-style: italic;
-                        `;
-                        break;
-                    case 'a':
-                        element.style.cssText = `
-                            font-family: ${selectedFont};
-                            color: ${allSettings.colors.link};
-                            text-decoration: underline;
-                        `;
+                        clonedElement.style.fontFamily = selectedFont;
+                        clonedElement.style.fontSize = `${allSettings.typography.baseFontSize}px`;
+                        clonedElement.style.color = allSettings.colors.text;
+                        clonedElement.style.borderLeft = `4px solid ${allSettings.colors.blockquote}`;
+                        clonedElement.style.margin = `${allSettings.spacing.blockquote}px 0`;
+                        clonedElement.style.padding = `0 0 0 16px`;
+                        clonedElement.style.fontStyle = 'italic';
                         break;
                     case 'table':
-                        element.style.cssText = `
-                            font-family: ${selectedFont};
-                            font-size: ${allSettings.table.fontSize}px;
-                            border-collapse: collapse;
-                            width: 100%;
-                            margin: ${allSettings.table.margin}px 0;
-                            border: ${allSettings.table.borderWidth}px solid ${allSettings.table.borderColor};
-                        `;
+                        clonedElement.style.fontFamily = selectedFont;
+                        clonedElement.style.fontSize = `${allSettings.table.fontSize}px`;
+                        clonedElement.style.borderCollapse = 'collapse';
+                        clonedElement.style.width = '100%';
+                        clonedElement.style.margin = `${allSettings.table.margin}px 0`;
+                        clonedElement.style.border = `${allSettings.table.borderWidth}px solid ${allSettings.table.borderColor}`;
+                        clonedElement.style.backgroundColor = computedStyle.getPropertyValue('background-color');
                         break;
                     case 'th':
-                        element.style.cssText = `
-                            font-family: ${selectedFont};
-                            font-size: ${allSettings.table.fontSize}px;
-                            border: ${allSettings.table.borderWidth}px solid ${allSettings.table.borderColor};
-                            padding: ${allSettings.table.padding}px ${allSettings.table.padding + 4}px;
-                            text-align: left;
-                            background-color: ${allSettings.table.headerBackground};
-                            font-weight: bold;
-                            color: ${allSettings.colors.text};
-                        `;
+                        clonedElement.style.fontFamily = selectedFont;
+                        clonedElement.style.fontSize = `${allSettings.table.fontSize}px`;
+                        clonedElement.style.border = `${allSettings.table.borderWidth}px solid ${allSettings.table.borderColor}`;
+                        clonedElement.style.padding = `${allSettings.table.padding}px ${allSettings.table.padding + 4}px`;
+                        clonedElement.style.textAlign = 'left';
+                        clonedElement.style.backgroundColor = allSettings.table.headerBg;
+                        clonedElement.style.fontWeight = 'bold';
+                        clonedElement.style.color = allSettings.colors.text;
                         break;
                     case 'td':
-                        element.style.cssText = `
-                            font-family: ${selectedFont};
-                            font-size: ${allSettings.table.fontSize}px;
-                            border: ${allSettings.table.borderWidth}px solid ${allSettings.table.borderColor};
-                            padding: ${allSettings.table.padding}px ${allSettings.table.padding + 4}px;
-                            text-align: left;
-                            color: ${allSettings.colors.text};
-                        `;
+                        clonedElement.style.fontFamily = selectedFont;
+                        clonedElement.style.fontSize = `${allSettings.table.fontSize}px`;
+                        clonedElement.style.border = `${allSettings.table.borderWidth}px solid ${allSettings.table.borderColor}`;
+                        clonedElement.style.padding = `${allSettings.table.padding}px ${allSettings.table.padding + 4}px`;
+                        clonedElement.style.textAlign = 'left';
+                        clonedElement.style.color = allSettings.colors.text;
+                        clonedElement.style.backgroundColor = computedStyle.getPropertyValue('background-color');
                         break;
                     case 'code':
-                        const isInPre = element.parentElement && element.parentElement.tagName.toLowerCase() === 'pre';
-                        if (!isInPre) {
-                            element.style.cssText = `
-                                font-family: ${allSettings.code.fontFamily === 'inherit' ? selectedFont : 'Courier New'};
-                                font-size: ${allSettings.code.fontSize}px;
-                                background-color: ${allSettings.code.background};
-                                padding: 3px 6px;
-                                border-radius: ${allSettings.code.borderRadius * 0.5}px;
-                                border: 1px solid ${allSettings.colors.blockquote};
-                            `;
-                        }
+                        const isInPre = clonedElement.parentElement && clonedElement.parentElement.tagName.toLowerCase() === 'pre';
+                        clonedElement.style.fontFamily = 'Courier New';
+                        clonedElement.style.fontSize = `${allSettings.code.fontSize}px`;
+                        clonedElement.style.backgroundColor = allSettings.code.background;
+                        clonedElement.style.borderRadius = `${allSettings.code.radius * 0.5}px`;
+                        clonedElement.style.border = `1px solid ${allSettings.colors.blockquote}`;
                         break;
                     case 'pre':
-                        element.style.cssText = `
-                            font-family: ${allSettings.code.fontFamily === 'inherit' ? selectedFont : 'Courier New'};
-                            font-size: ${allSettings.code.fontSize}px;
-                            background-color: ${allSettings.code.background};
-                            padding: ${allSettings.code.padding}px;
-                            border-radius: ${allSettings.code.borderRadius}px;
-                            border: 1px solid ${allSettings.colors.blockquote};
-                            overflow-x: auto;
-                            margin: ${allSettings.spacing.paragraph}px 0;
-                        `;
+                        clonedElement.style.fontFamily = 'Courier New';
+                        clonedElement.style.fontSize = `${allSettings.code.fontSize}px`;
+                        clonedElement.style.backgroundColor = allSettings.code.background;
+                        clonedElement.style.padding = `${allSettings.code.padding}px`;
+                        clonedElement.style.borderRadius = `${allSettings.code.radius}px`;
+                        clonedElement.style.border = `1px solid ${allSettings.colors.blockquote}`;
+                        clonedElement.style.overflowX = 'auto';
+                        clonedElement.style.margin = `${allSettings.spacing.paragraph}px 0`;
                         break;
                     case 'strong':
                     case 'b':
-                        element.style.cssText = `
-                            font-family: ${selectedFont};
-                            font-weight: bold;
-                        `;
+                        clonedElement.style.fontFamily = selectedFont;
+                        clonedElement.style.fontWeight = 'bold';
+                        clonedElement.style.color = allSettings.colors.text;
+                        clonedElement.style.fontSize = `${allSettings.typography.baseFontSize}px`;
+                        clonedElement.style.lineHeight = allSettings.typography.lineHeight;
                         break;
                     case 'em':
                     case 'i':
-                        element.style.cssText = `
-                            font-family: ${selectedFont};
-                            font-style: italic;
-                        `;
+                        clonedElement.style.fontFamily = selectedFont;
+                        clonedElement.style.fontStyle = 'italic';
+                        clonedElement.style.color = allSettings.colors.text;
+                        clonedElement.style.fontSize = `${allSettings.typography.baseFontSize}px`;
+                        clonedElement.style.lineHeight = allSettings.typography.lineHeight;
                         break;
                     case 'hr':
-                        element.style.cssText = `
-                            border: none;
-                            border-top: 2px solid ${allSettings.colors.blockquote};
-                            margin: ${allSettings.spacing.heading}px 0;
-                        `;
+                        clonedElement.style.border = 'none';
+                        clonedElement.style.borderTop = `2px solid ${allSettings.colors.blockquote}`;
+                        clonedElement.style.margin = `${allSettings.spacing.heading}px 0`;
                         break;
                     default:
-                        // Apply base font to any other elements
-                        if (element.style) {
-                            element.style.fontFamily = selectedFont;
-                            element.style.fontSize = `${allSettings.typography.baseFontSize}px`;
-                            element.style.color = allSettings.colors.text;
+                        if (clonedElement.style) {
+                            clonedElement.style.fontFamily = selectedFont;
+                            clonedElement.style.fontSize = `${allSettings.typography.baseFontSize}px`;
+                            clonedElement.style.color = allSettings.colors.text;
+                            clonedElement.style.lineHeight = allSettings.typography.lineHeight;
+                            // Copy other non-typographical computed styles for default elements
+                            const defaultPropertiesToCopy = [
+                                'text-align',
+                                'background-color',
+                                'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
+                                'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
+                                'display', 'box-sizing',
+                                'border-top-width', 'border-right-width', 'border-bottom-width', 'border-left-width',
+                                'border-top-style', 'border-right-style', 'border-bottom-style', 'border-left-style',
+                                'border-top-color', 'border-right-color', 'border-bottom-color', 'border-left-color',
+                                'border-radius',
+                                'white-space', 'word-break', 'overflow-wrap',
+                            ];
+                            for (const prop of defaultPropertiesToCopy) {
+                                const value = computedStyle.getPropertyValue(prop);
+                                if (value && value !== 'initial' && value !== 'unset' && value !== 'revert' && value !== '') {
+                                    clonedElement.style.setProperty(prop, value);
+                                }
+                            }
                         }
                         break;
                 }
-                
+
                 // Recursively apply to all child elements
-                for (let child of element.children) {
-                    applyInlineStyles(child);
+                // It's crucial that originalElement and clonedElement have the same child structure
+                // due to cloneNode(true). We iterate children by index to ensure correspondence.
+                for (let i = 0; i < originalElement.children.length; i++) {
+                    const originalChild = originalElement.children[i];
+                    const clonedChild = clonedElement.children[i];
+                    applyInlineStyles(clonedChild, originalChild);
                 }
             }
-            
-            // Apply inline styles to all elements
-            applyInlineStyles(clonedContent);
+
+            // Initial call to apply inline styles to the cloned content.
+            // Pass the cloned 'preview' element and the original 'preview' element itself as arguments.
+            applyInlineStyles(clonedContent, preview);
             
             // Create the final HTML with the styled content
             const styledHTML = `
-                <div style="font-family: ${selectedFont}; font-size: ${allSettings.typography.baseFontSize}px; line-height: ${allSettings.typography.lineHeight}; color: ${allSettings.colors.text}; background: white; padding: 20px; max-width: 100%;">
+                <div style="font-family: ${selectedFont}; 
+                             font-size: ${allSettings.typography.baseFontSize}px; 
+                             line-height: ${allSettings.typography.lineHeight}; 
+                             color: ${allSettings.colors.text}; 
+                             background: white; 
+                             padding: 20px; 
+                             max-width: 100%;
+                             font-weight: normal; /* Added for general text */
+                             font-style: normal; /* Added for general text */">
                     ${clonedContent.innerHTML}
                 </div>
             `;
@@ -2352,6 +2381,7 @@ greet('World');
             // Try modern clipboard API first (for rich text support)
             if (navigator.clipboard && window.ClipboardItem) {
                 try {
+                    console.log('Styled HTML being copied:', styledHTML); // Added for debugging
                     const clipboardItem = new ClipboardItem({
                         'text/html': new Blob([styledHTML], { type: 'text/html' }),
                         'text/plain': new Blob([plainText], { type: 'text/plain' })
@@ -2580,6 +2610,7 @@ greet('World');
         });
 
         async function downloadPDF() {
+            console.log('Download PDF button clicked!'); // Added for debugging
             loading.classList.add('show');
             
             try {
@@ -2850,7 +2881,7 @@ greet('World');
                 await html2pdf().set(opt).from(element).save();
                 
             } catch (error) {
-                console.error('Error generating PDF:', error);
+                console.error('Error generating PDF with html2pdf:', error); // More specific error logging
                 
                 // Enhanced fallback method with better content processing
                 try {
